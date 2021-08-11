@@ -79,3 +79,4 @@ function get_site_user_rating(site) {
 
     return 0
 }
+
