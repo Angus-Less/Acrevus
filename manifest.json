@@ -1,16 +1,26 @@
 {
-    "manifest_version": 2,
-  
     "name": "Acrevus: Stop Fake News",
-    "short_name": "Acrevus",
-    "description": "Community & AI based fake news detection extension.",
     "version": "0.1",
-
-    "browser_action": {
-     "default_icon": "Acrevus.png",
-     "default_popup": "index.html"
-    },
+    "description": "Helps identify fake/misleading articles using both user-verified and AI text analysis methods.",
     "permissions": [
-     "activeTab"
-     ]
+      "activeTab",
+      "<all_urls>",
+      "tabs"
+    ],
+    "browser_action": {
+        "default_icon": "Acrevus.png",
+        "default_popup": "index.html"
+    },
+    "background": {
+        
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["firebase.js"],
+        "run_at": "document_end"
+      }
+    ],
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
   }
