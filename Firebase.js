@@ -1,4 +1,3 @@
-
 var firebaseConfig = {
     apiKey: "AIzaSyDrD-udDqxDehOayG9U95fAeAYlwFwIYME",
     authDomain: "acrevus-4bb74.firebaseapp.com",
@@ -8,8 +7,10 @@ var firebaseConfig = {
     appId: "1:435255014159:web:6aa1f1b4ea0af1360a447a",
     measurementId: "G-33TKV57R3K"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
 
 function log_website(site, rating, description) {
     /**
@@ -22,9 +23,7 @@ function log_website(site, rating, description) {
      * Return:
      *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
      */
-
     return 0
-
 }
 
 function check_website(site) {
@@ -69,6 +68,10 @@ function get_site_user_rating(site) {
      * Gets the site's user rating and returns an array containing the rating.
      * Both elements will be -666 if there is no user rating.
      * 
+     * Edge cases:
+     *      - Possibly could have very high user rating and verified as misleading.
+     *        Also very serious problem with sandbagging and user 
+     * 
      * Param:
      *      - site: the article page being referenced.
      * Return:
@@ -79,4 +82,3 @@ function get_site_user_rating(site) {
 
     return 0
 }
-
