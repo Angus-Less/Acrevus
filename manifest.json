@@ -5,7 +5,8 @@
     "permissions": [
       "activeTab",
       "<all_urls>",
-      "tabs"
+      "tabs",
+      "storage"
     ],
     "browser_action": {
         "default_icon": "Acrevus_Logo.png",
@@ -17,10 +18,10 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["firebase.js"],
+        "js": ["firebase.js", "Browser_editing.js"],
         "run_at": "document_end"
       }
     ],
     "manifest_version": 2,
-    "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+    "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com ; object-src 'self'"
   }
