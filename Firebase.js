@@ -1,5 +1,4 @@
 
-
 var firebaseConfig = {
     apiKey: "AIzaSyDrD-udDqxDehOayG9U95fAeAYlwFwIYME",
     authDomain: "acrevus-4bb74.firebaseapp.com",
@@ -25,11 +24,13 @@ async function log_website(site, rating, description) {
      * Return:
      *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
      */
+
     // Shortened macro for the entire website.
     var site = '';
     const websiteReference = db.collection('Blacklisted_sites').description(`${site}`).get();
     console.log(websiteReference);
-    
+    return 0;
+
 }
 
 function check_website(site) {
@@ -79,12 +80,6 @@ function log_website(site, rating, description) {
      * Return:
      *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
      */
-    subdomain_site
-    record = {
-        site, 
-        rating,
-        description
-    }
 
     return 0;
 }
