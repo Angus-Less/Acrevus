@@ -32,20 +32,12 @@ function get_domain_tags() {
          * Returns the length of the cites used on google search.
          */
         numberOfSites = Number(length);
+        
         //alert(numberOfSites);
     }
 
-    function display_h1(results) {
-        /**
-         * Modifies the inner html to show the website domains.
-         */
-        document.getElementById('test').innerHTML += "<p>Domain list: "+ `${currentPage} ` + results +"</p>";
-        currentPage += 1;
-    }
 
-
-    //alert(numberOfSites);
-     //Get the number of searches available.
+    //Get the number of searches available.
     chrome.tabs.query({active: true}, function(tabs) {
         var tab = tabs[0];
         tab_title = tab.title;
@@ -62,10 +54,16 @@ function get_domain_tags() {
         tab_title = tab.title;
         chrome.tabs.executeScript(tab.id, {
             code: `document.querySelectorAll("cite")[${i}].textContent`
-        }, display_h1);
+        }, function(results) {
+            document.getElementById('test').innerHTML += "<p>Domain list: "+ `${currentPage} ` + results +"</p>";
+            list_of_sites.push(10);
+            list_of_sites.push(1337);
+            currentPage += 1;
+        });
         });    
     }
    
+    alert(list_of_sites);
     // Main modification of the page update here.
     // for (var i = 0; i < list_of_sites.length; i++) {
     //     chrome.storage.local.get[i], function(result) {
