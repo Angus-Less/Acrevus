@@ -39,10 +39,17 @@ function get_domain_tags() {
             chrome.tabs.executeScript(tab.id, {
             code: `document.querySelectorAll("cite").length`
             }, function(results) {
-                alert(results);
                 numberOfSites = results;
-                alert(numberOfSites);
-                
+
+                // Highlights all <cite> tags in red.
+                for (var i = 0; i < numberOfSites; i++) {
+                    chrome.tabs.executeScript(tab.id, {
+                        code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red"`
+                    }, function(results) {
+                        // Do nothing but specify callback function.
+                    }); 
+                }
+
                 // Exceute the script modification.
                 for (var i = 0; i < numberOfSites; i++) {
                     chrome.tabs.executeScript(tab.id, {
@@ -50,9 +57,8 @@ function get_domain_tags() {
                     }, function(results) {
                         // Modifies the extension's HTML.
                         document.getElementById('test').innerHTML += "<p>Domain list: "+ `${i} ` + results +"</p>";
-                        
-                        
-                    }); }
+                    }); 
+                }
             });
         });    
     });
