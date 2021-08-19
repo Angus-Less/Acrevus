@@ -39,6 +39,7 @@ function get_domain_tags() {
             chrome.tabs.executeScript(tab.id, {
             code: `document.querySelectorAll("cite").length`
             }, function(results) {
+                
                 numberOfSites = results;
 
                 // Highlights all <cite> tags in red.
@@ -52,12 +53,16 @@ function get_domain_tags() {
 
                 // Exceute the script modification.
                 for (var i = 0; i < numberOfSites; i++) {
-                    chrome.tabs.executeScript(tab.id, {
-                        code: `document.querySelectorAll("cite")[${i}].textContent`
-                    }, function(results) {
-                        // Modifies the extension's HTML.
-                        document.getElementById('test').innerHTML += "<p>Domain list: "+ `${i} ` + results +"</p>";
-                    }); 
+                    if (i % 2 == 0 || i == 0) {
+                        chrome.tabs.executeScript(tab.id, {
+                            code: `document.querySelectorAll("cite")[${i}].textContent`
+                        }, function(results) {
+                            // Modifies the extension's HTML.
+                            let subDomain = String(results).split(" ")[0]
+                            document.getElementById('test').innerHTML += "<p>Domain list: "+ `${i} ` + subDomain +"</p>";
+                        }); 
+                    }
+                    
                 }
             });
         });    
