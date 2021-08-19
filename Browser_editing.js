@@ -23,46 +23,43 @@ function get_domain_tags() {
      */
      var tab_title = '';
      var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
-     var numberOfSites = 20; // TODO: FIX THIS SO THAT WE CAN RE-ALLOCATE IT.
+     //var numberOfSites = 20; // TODO: FIX THIS SO THAT WE CAN RE-ALLOCATE IT.
      var list_of_sites = [];
 
-
-    function get_length(length) {
-        /**
-         * Returns the length of the cites used on google search.
-         */
-        numberOfSites = Number(length);
-        
-        //alert(numberOfSites);
-    }
-
-
     //Get the number of searches available.
+    // Go through the page and get the cite tags from the google search.
+    
     chrome.tabs.query({active: true}, function(tabs) {
         var tab = tabs[0];
         tab_title = tab.title;
-        chrome.tabs.executeScript(tab.id, {
-          code: `document.querySelectorAll("cite").length`
-        }, get_length);
+        var numberOfSites = 0;
+        chrome.tabs.query({active: true}, function(tabs) {
+            var tab = tabs[0];
+            tab_title = tab.title;
+            chrome.tabs.executeScript(tab.id, {
+            code: `document.querySelectorAll("cite").length`
+            }, function(results) {
+                alert(results);
+                numberOfSites = results;
+                alert(numberOfSites);
+                
+                // Exceute the script modification.
+                for (var i = 0; i < numberOfSites; i++) {
+                    chrome.tabs.executeScript(tab.id, {
+                        code: `document.querySelectorAll("cite")[${i}].textContent`
+                    }, function(results) {
+                        // Modifies the extension's HTML.
+                        document.getElementById('test').innerHTML += "<p>Domain list: "+ `${i} ` + results +"</p>";
+                        
+                        
+                    }); }
+            });
+        });    
     });
 
+
+ 
     
-    // Go through the page and get the cite tags from the google search.
-    for (var i = 0; i < numberOfSites; i++) {
-        chrome.tabs.query({active: true}, function(tabs) {
-        var tab = tabs[0];
-        tab_title = tab.title;
-        chrome.tabs.executeScript(tab.id, {
-            code: `document.querySelectorAll("cite")[${i}].textContent`
-        }, function(results) {
-            document.getElementById('test').innerHTML += "<p>Domain list: "+ `${currentPage} ` + results +"</p>";
-            list_of_sites.push(10);
-            list_of_sites.push(1337);
-            currentPage += 1;
-        });
-        });    
-    }
    
-    alert(list_of_sites);
     
 }
