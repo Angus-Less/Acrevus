@@ -64,12 +64,5 @@ function get_domain_tags() {
     }
    
     alert(list_of_sites);
-    // Main modification of the page update here.
-    // for (var i = 0; i < list_of_sites.length; i++) {
-    //     chrome.storage.local.get[i], function(result) {
-    //         // Change the entry.
-    //         document.getElementById('test').innerHTML += "<p>Domain list: " + result +"</p>";
-    //     }
-    // }
     
 }
