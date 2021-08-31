@@ -4,10 +4,13 @@
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-firestore.js"></script>
         <script type="text/javascript" src="Firebase.js"></script>
-        <script type="text/javascript" src="Browser_editing.js"></script>
+
 
         <!-- CSS Integration-->
         <link rel="stylesheet" href="index.css"> 
+
+
+
 
     </head>
 
@@ -18,16 +21,29 @@
             <h1>Acrevus</h1>
 
         </div>
+        <button type="loadButton" onclick="log_wrapper();">New Entry</button>
+        <button type="loadButton" onclick="check_wrapper();">Check Value</button>
+        <p id="doc_details"></p>
 
-        <p>
-            I guess this works.
-        </p>
-        <button id="testButton">Click for activeTab</button>
-        <div id="test">
-            
-            
+
+        WARNING!!! THIS WRITES TO FIREBASE:
+        <input type="file" name="Processed Sources" id="sourcelist" />
+
+
+        <p>Simple GPT Example.</p>
+        <input type="text" placeholder="website" id="siteInput">
+
+        <button type="button" onclick="get_description();">Get Rating</button>
+        <p id="description">bbc.co.uk is trustworthy</p>
+        <button type="button" onclick="get_elaboration();">Get Elaboration</button>
+        <p id="elaboration">bbc.co.uk is trustworthy because</p>
+
+
+
         </div>
 
+
+        <script src="index.js"></script>
     </body>
 
 
