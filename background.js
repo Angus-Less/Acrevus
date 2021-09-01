@@ -1,21 +1,11 @@
-/**
- * All browser scraping related functions are here.
- * 
- * The following are required because of Chrome's Content Security Policy banning all inline scripts and event-functions.
- */
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('testButton').addEventListener('click', get_domain_tags);      
-    // dont try this at home kids -> chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
-});
+// on tab load
+chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete') {
+      get_domain_tags(); 
+    }
+  })
 
-
-function sleep(ms) {
-    /**
-     * System timeout for the page.
-     */
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
+// duplicate code ftw
 function get_domain_tags() {
     /**
      * Returns an array of all the domains in the HTML page the user is looking at.
