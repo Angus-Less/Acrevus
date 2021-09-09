@@ -1,7 +1,7 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete') {
-      get_domain_tags(); 
+        get_domain_tags(); 
     }
   })
 
@@ -34,10 +34,11 @@ function get_domain_tags() {
                 
                 numberOfSites = results;
 
-                // Highlights all <cite> tags in red.
+                // Highlights all <cite> tags in red + add images
                 for (var i = 0; i < numberOfSites; i++) {
                     chrome.tabs.executeScript(tab.id, {
-                        code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red"`
+                        code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
+                        document.querySelectorAll("cite")[${i}].innerHTML += "<img src = chrome-extension://mdidanbboibbkmclkikagnijdjdognlj/img/cross_icon.png style='width:32px;height:32px;'>"`
                     }, function(results) {
                         // Do nothing but specify callback function.
                     }); 
