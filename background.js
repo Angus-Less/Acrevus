@@ -1,6 +1,6 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete') {
+    if (changeInfo.status == 'complete' || changeInfo.url) {
         get_domain_tags(); 
     }
   })
@@ -34,12 +34,18 @@ function get_domain_tags() {
                 
                 numberOfSites = results;
 
-                // Highlights all <cite> tags in red + add images
+                // Highlights all <cite> tags in red + add icons
                 for (var i = 0; i < numberOfSites; i++) {
                     var id = chrome.runtime.id
+                    // only add if it hasn't been added yet
                     chrome.tabs.executeScript(tab.id, {
-                        code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
-                        document.querySelectorAll("cite")[${i}].innerHTML += "<img src = chrome-extension://${id}/img/cross_icon.png style='width:32px;height:32px;'>"`
+                        code: `var loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
+                                var domain = String(document.querySelectorAll("cite")[${i}].textContent).split(" ")[0]; 
+                                var icon_path = (domain.includes("uq")) ? 'tick_icon.png' : 'cross_icon.png';
+                                if (!loaded) { 
+                                    //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
+                                    document.querySelectorAll("cite")[${i}].innerHTML += "<img class='icon_acrevus${i}' src = chrome-extension://${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'>"
+                                }`
                     }, function(results) {
                         // Do nothing but specify callback function.
                     }); 
