@@ -36,9 +36,10 @@ function get_domain_tags() {
 
                 // Highlights all <cite> tags in red + add images
                 for (var i = 0; i < numberOfSites; i++) {
+                    var id = chrome.runtime.id
                     chrome.tabs.executeScript(tab.id, {
                         code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
-                        document.querySelectorAll("cite")[${i}].innerHTML += "<img src = chrome-extension://mdidanbboibbkmclkikagnijdjdognlj/img/cross_icon.png style='width:32px;height:32px;'>"`
+                        document.querySelectorAll("cite")[${i}].innerHTML += "<img src = chrome-extension://${id}/img/cross_icon.png style='width:32px;height:32px;'>"`
                     }, function(results) {
                         // Do nothing but specify callback function.
                     }); 
