@@ -1,13 +1,14 @@
 # flutter_calculator
 
-A new Flutter project.
+A new Flutter project (a calculator).
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-## Build command 
-flutter build web --web-renderer html --csp
+## Instructions
+1. Run build command ```flutter build web --web-renderer html --csp``` (CSP stuff included)
+2. Load extension from ```./build/web```
 
 A few resources to get you started if this is your first Flutter project:
 
