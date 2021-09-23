@@ -1,4 +1,4 @@
-
+// The app's Firebase configuration(change it to fit your database).
 var firebaseConfig = {
     apiKey: "AIzaSyDrD-udDqxDehOayG9U95fAeAYlwFwIYME",
     authDomain: "acrevus-4bb74.firebaseapp.com",
@@ -12,6 +12,7 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
+
 
 async function log_website(site, rating, description) {
     /**
@@ -37,20 +38,39 @@ function check_website(site) {
     /**
      * Checks against the database if either this specific article is flagged,
      * or if the website is flagged. 
+     *
+     * THIS IS ASYNC AND I DON'T KNOW WHAT THAT MEANS
      * 
      * Param:
      *      - site: string comprising the article itself. 
+
      * Return:
-     *      - -3    if website and article is flagged.
-     *      - -2    if website is flagged and article is fine.
-     *      - -1    if website is fine and specific article is flagged.
-     *      - 0     if site is not entered or non-deterministic decision.
-     *      - 1     if website article is endorsed and website is not determined.
-     *      - 2     if website is endorsed and article is not determined.
-     *      - 3     if website is endoresed and article is endorsed.
+     *      - -1    if website is flagged.
+     *      - 0     if site is disputed.
+     *      - 1     if website is endorsed.
+     *      - null  if website is unknown
      */
-    
-    return 0;
+
+
+    var docRef = db.collection("Sites").doc(site);
+
+    return docRef.get().then(
+        (doc) => {
+            console.log(doc)
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                
+                data = doc.data();
+                console.log(data.rating);
+                return data.rating;
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+                return null;
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        })
 }
 
 
@@ -69,17 +89,38 @@ function log_user_entry(site, rating) {
     return 0;
 }
 
-function log_website(site, rating, description) {
+
+
+function log_website(URL, site, rating, description) {
     /**
      * Logs the website to the firestore database.
      * 
      * Param:
-     *      - site: string of the total subdomain
-     *      - rating: 
-     *      - description:
+     *      - URL: string
+     *      - site: string w/ name
+     *      - rating: int
+     *      - description: words
+     *      
      * Return:
      *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
      */
+
+
+
+    // Add a new document in collection "cities"
+    db.collection("Sites").doc(URL).set({
+        name: site,
+        rating: rating,
+        desc: description
+    })
+    .then(() => {
+        console.log("Document successfully written!");
+        return 0;
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+        return -1;
+    });
 
     return 0;
 }
@@ -99,6 +140,6 @@ function get_site_user_rating(site) {
      *          - 0:    whole site
      *          - 1:    specific article.
      */
-
+    
   return 0;
 }

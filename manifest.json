@@ -1,38 +1,11 @@
 {
-    "name": "Acrevus: Stop Fake News",
-    "version": "0.1",
-    "description": "Helps identify fake/misleading articles using both user-verified and AI text analysis methods.",
-    "permissions": [
-      "activeTab",
-      "<all_urls>",
-      "tabs",
-      "storage",
-      "tabs",
-      "notifications",
-      "http://*/",
-      "https://*/"
-    ],
-    "browser_action": {
-        "default_icon": "Acrevus_Logo.png",
-        "default_popup": "index.html"
-    },
-    "background": {
-      "scripts": [
-          "background.js"
-      ],
-      "persistent": true
-    },
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["Firebase.js", "Browser_editing.js"],
-        "run_at": "document_end"
-      }
-    ],
-    "web_accessible_resources": [
-      "img/cross_icon.png",
-      "img/tick_icon.png"
-    ],
-    "manifest_version": 2,
-    "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com ; object-src 'self'"
-  }
+  "name": "Acrevus Redux",
+  "version": "1.0",
+  "description": "Firebase working?",
+  "manifest_version": 2,
+  "browser_action": {
+      "default_icon": "Acrevus_Logo.png",
+      "default_popup": "index.html"
+  },
+  "content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+}
