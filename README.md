@@ -10,6 +10,7 @@ Adapted to Extension using ```https://www.youtube.com/watch?v=INsXMV2RXM4``` (da
 ## Prerequisite
 1. Flutter ```https://flutter.dev```
 2. Android Studio (not sure if needed for web dev - ```flutter doctor``` is crying over this) ```https://developer.android.com/studio```
+3. VS Code with Flutter and Dart extensions (works extremely well)
 
 ## Instructions
 1. Run build command ```flutter build web --web-renderer html --csp``` (CSP stuff included)
