@@ -5,6 +5,11 @@ A new Flutter project (a calculator).
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+Adapted to Extension using ```https://www.youtube.com/watch?v=INsXMV2RXM4``` (dated July 2021)
+
+## Prerequisite
+1. Flutter ```https://flutter.dev```
+2. Android Studio (not sure if needed for web dev - ```flutter doctor``` is crying over this) ```https://developer.android.com/studio```
 
 ## Instructions
 1. Run build command ```flutter build web --web-renderer html --csp``` (CSP stuff included)
