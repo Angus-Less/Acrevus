@@ -3,9 +3,9 @@
   "version": "1.0",
   "description": "Build an Extension!",
   "manifest_version": 2,
-  "browser_action": {
-      "default_icon": "Acrevus_Logo.png",
-      "default_popup": "index.html"
+  "background": {
+    "page": "background.html",
+    "pesistent": false
   },
   "content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
 }
