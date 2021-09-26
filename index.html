@@ -1,32 +1,30 @@
+
+
+
 <html lang="en">
     <head>
-
-        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-firestore.js"></script>
-        <script type="text/javascript" src="Firebase.js"></script>
-        <script type="text/javascript" src="Browser_editing.js"></script>
-
         <!-- CSS Integration-->
         <link rel="stylesheet" href="index.css"> 
-
     </head>
 
 
     <body>
-        
+ 
         <div class="header-title">
             <h1>Acrevus</h1>
 
         </div>
 
-        <p>
-            I guess this works.
-        </p>
-        <button id="testButton">Click for activeTab</button>
-        <div id="test">
-            
-            
-        </div>
+        <input type="text" placeholder="website" id="siteInput">
+
+        <button type="button" id="descButton">Get Rating</button>
+        <p id="description">bbc.co.uk is trustworthy</p>
+
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
+        <script type="text/javascript" src="firebase.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        
 
     </body>
 

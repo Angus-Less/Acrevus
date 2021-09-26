@@ -1,12 +1,13 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete') {
-      get_domain_tags(); 
+    if (changeInfo.status == 'complete' || changeInfo.url) {
+        get_domain_tags(); 
     }
   })
 
 // duplicate code ftw
 function get_domain_tags() {
+    
     /**
      * Returns an array of all the domains in the HTML page the user is looking at.
      * 
@@ -25,36 +26,65 @@ function get_domain_tags() {
         var tab = tabs[0];
         tab_title = tab.title;
         var numberOfSites = 0;
+        chrome.tabs.executeScript(tab.id, {
+            file: "firebase-app.js"
+        });
+        chrome.tabs.executeScript(tab.id, {
+            file: "firebase-firestore.js"
+        });
+        chrome.tabs.executeScript(tab.id, {
+            file: "firebase.js"
+        });
         chrome.tabs.query({active: true}, function(tabs) {
             var tab = tabs[0];
             tab_title = tab.title;
             chrome.tabs.executeScript(tab.id, {
             code: `document.querySelectorAll("cite").length`
             }, function(results) {
-                
                 numberOfSites = results;
-
-                // Highlights all <cite> tags in red.
+                // Highlights all <cite> tags in red + add icons
                 for (var i = 0; i < numberOfSites; i++) {
+                    var id = chrome.runtime.id
+                    // only add if it hasn't been added yet
                     chrome.tabs.executeScript(tab.id, {
-                        code: `document.querySelectorAll("cite")[${i}].style.backgroundColor = "red"`
-                    }, function(results) {
-                        // Do nothing but specify callback function.
-                    }); 
-                }
-
-                // Exceute the script modification.
-                for (var i = 0; i < numberOfSites; i++) {
-                    if (i % 2 == 0 || i == 0) {
-                        chrome.tabs.executeScript(tab.id, {
-                            code: `document.querySelectorAll("cite")[${i}].textContent`
-                        }, function(results) {
-                            // Modifies the extension's HTML.
-                            let subDomain = String(results).split(" ")[0]
-                            document.getElementById('test').innerHTML += "<p>Domain list: "+ `${i} ` + subDomain +"</p>";
-                        }); 
-                    }
-                    
+                        code: ` 
+                                var domain = String(document.querySelectorAll("cite")[${i}].textContent).split(" ")[0]; 
+                                domain = domain.split(".");
+                                domain = domain.at(-2) + "." + domain.at(-1);
+                                if (domain.includes("//")) {
+                                    domain = domain.split("//").at(-1);
+                                }
+                                if (domain.includes("/")) {
+                                    domain = domain.split("/")[0];
+                                }
+                                console.log(String(domain));
+                                check_website(String(domain)).then(rating => {
+                                    //console.log(rating);
+                                    var icon_path;
+                                    switch (rating) {
+                                        case -1:
+                                            icon_path = 'cross_icon.png';
+                                            break;
+                                        case 0:
+                                            icon_path = 'exclaim_icon.png';
+                                            break;
+                                        case 1:
+                                            icon_path = 'tick_icon.png';
+                                            break;
+                                        default:
+                                            icon_path = 'question_icon.png';
+                                            break;
+                                    }
+                                    loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
+                                    if (!loaded) { 
+                                        //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
+                                        document.querySelectorAll("cite")[${i}].innerHTML += "<img class='icon_acrevus${i}' src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'>"
+                                    } 
+                                });
+                                `
+                    }, function(res) {
+                        //
+                    });           
                 }
             });
         });    
