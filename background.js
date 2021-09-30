@@ -5,6 +5,10 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     }
   })
 
+function printhello(){
+    console.log("hello!");
+}
+
 // duplicate code ftw
 function get_domain_tags() {
     
@@ -78,11 +82,13 @@ function get_domain_tags() {
                                     loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
                                     if (!loaded) { 
                                         //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
-                                        document.querySelectorAll("cite")[${i}].innerHTML += "<img class='icon_acrevus${i}' src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'>"
+                                        document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' class='icon_acrevus${i}' style='z-index:100000'><img src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'></button>"
+                                        document.getElementsByClassName("icon_acrevus${i}")[0].addEventListener("click", ${printhello});
                                     } 
                                 });
                                 `
                     }, function(res) {
+                        
                         //
                     });           
                 }
