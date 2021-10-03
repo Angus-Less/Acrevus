@@ -5,8 +5,11 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     }
   })
 
-function printhello(){
-    console.log("hello!");
+// TODO: 1. Button to close window. 2. Display gpt summary. 3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
+function display_window(evt) {
+    document.querySelectorAll('.icon_acrevus'+String(evt.currentTarget.id))[0].innerHTML += "<div id='popup_acrevus"+String(evt.currentTarget.id) + "' style='background-color: white; width:200px; \
+        height:250px; position:relative;left:600px;top:-30px'>ACREVUS IS NEUTRAL TECHNOLOGY</div>"
+    //console.log("hello!");
 }
 
 // duplicate code ftw
@@ -83,7 +86,9 @@ function get_domain_tags() {
                                     if (!loaded) { 
                                         //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
                                         document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' class='icon_acrevus${i}' style='z-index:100000'><img src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'></button>"
-                                        document.getElementsByClassName("icon_acrevus${i}")[0].addEventListener("click", ${printhello});
+                                        const tmp1 = document.getElementsByClassName("icon_acrevus${i}")[0];
+                                        tmp1.id = ${i};
+                                        tmp1.addEventListener("click", ${display_window}, false);
                                     } 
                                 });
                                 `
