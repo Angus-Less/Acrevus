@@ -156,7 +156,7 @@ function get_site_user_rating(site) {
     var docRef = db.collection("UserRatings").doc(site);
 
     if (docRef == null) {
-        return -666
+        return [-666, -666]
     }
     return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
 }
