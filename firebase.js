@@ -87,11 +87,21 @@ function log_user_entry(site, rating) {
      *      - -1    if error occurred.
      *      - 0     if successful.
      */
-    if (rating < 1 || rating > 5)
+
+    // Assume rating = 1 or -1
+    if (rating != 1 && rating != -1) {
         return -1
-    db.collection("Sites").doc(site).update({
-        "user_rating": arrayUnion(rating)
-    });
+    }
+
+    if (rating == 1) {
+        db.collection("UserRatings").doc(site).update({
+            "thumbs_up": increment(1) 
+        });
+    } else {
+        db.collection("UserRatings").doc(site).update({
+            "thumbs_down": increment(1) 
+        });
+    }
     return 0
 }
 
@@ -110,9 +120,6 @@ function log_website(URL, site, rating, description) {
      * Return:
      *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
      */
-
-
-
     // Add a new document in collection "cities"
     db.collection("Sites").doc(URL).set({
         name: site,
@@ -146,6 +153,10 @@ function get_site_user_rating(site) {
      *          - 0:    whole site
      *          - 1:    specific article.
      */
-    var docRef = db.collection("Sites").doc(site);
-    return docRef.get().data().user_rating
+    var docRef = db.collection("UserRatings").doc(site);
+
+    if (docRef == null) {
+        return -666
+    }
+    return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
 }
