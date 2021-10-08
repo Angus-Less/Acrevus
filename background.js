@@ -7,8 +7,20 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 
 // TODO: 1. Button to close window. 2. Display gpt summary. 3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
 function display_window(evt) {
-    document.querySelectorAll('.icon_acrevus'+String(evt.currentTarget.id))[0].innerHTML += "<div id='popup_acrevus"+String(evt.currentTarget.id) + "' style='background-color: white; width:200px; \
-        height:250px; position:relative;left:600px;top:-30px'>ACREVUS IS NEUTRAL TECHNOLOGY</div>"
+    var id = evt.currentTarget.id;
+    console.log(id);
+    site = String(evt.currentTarget.domain);
+    console.log(site);
+    //check_website(String(domain)).then(rating => {
+    check_website_gpt(site).then(summary => {
+        if (summary == null) {
+            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
+        height:250px; position:relative;left:600px;top:-30px'>(Summary Unavailable) </div>"
+        } else {
+            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
+        height:250px; position:relative;left:600px;top:-30px'>" + summary + "</div>"
+        }
+    });
     //console.log("hello!");
 }
 
@@ -49,13 +61,13 @@ function get_domain_tags() {
             code: `document.querySelectorAll("cite").length`
             }, function(results) {
                 numberOfSites = results;
-                // Highlights all <cite> tags in red + add icons
-                for (var i = 0; i < numberOfSites; i++) {
-                    var id = chrome.runtime.id
-                    // only add if it hasn't been added yet
-                    chrome.tabs.executeScript(tab.id, {
-                        code: ` 
-                                var domain = String(document.querySelectorAll("cite")[${i}].textContent).split(" ")[0]; 
+                var domains = [];
+                var id = chrome.runtime.id;
+                chrome.tabs.executeScript(tab.id, {
+                    code: ` 
+                            var domains_2 = [];
+                            for (i = 0; i < ${numberOfSites}; i++) {
+                                domain = String(document.querySelectorAll("cite")[i].textContent).split(" ")[0]; 
                                 domain = domain.split(".");
                                 domain = domain.at(-2) + "." + domain.at(-1);
                                 if (domain.includes("//")) {
@@ -64,39 +76,53 @@ function get_domain_tags() {
                                 if (domain.includes("/")) {
                                     domain = domain.split("/")[0];
                                 }
-                                console.log(String(domain));
-                                check_website(String(domain)).then(rating => {
-                                    //console.log(rating);
-                                    var icon_path;
-                                    switch (rating) {
-                                        case -1:
-                                            icon_path = 'cross_icon.png';
-                                            break;
-                                        case 0:
-                                            icon_path = 'exclaim_icon.png';
-                                            break;
-                                        case 1:
-                                            icon_path = 'tick_icon.png';
-                                            break;
-                                        default:
-                                            icon_path = 'question_icon.png';
-                                            break;
-                                    }
-                                    loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
-                                    if (!loaded) { 
-                                        //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
-                                        document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' class='icon_acrevus${i}' style='z-index:100000'><img src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'></button>"
-                                        const tmp1 = document.getElementsByClassName("icon_acrevus${i}")[0];
-                                        tmp1.id = ${i};
-                                        tmp1.addEventListener("click", ${display_window}, false);
-                                    } 
-                                });
+                                domains_2[i] = domain;
+                            }
+                            domains_2;
+                        `
+                }, function(results2) {
+                    domains = results2[0];
+                    for (j = 0; j < domains.length; j++) {
+                        domains[j] = '"' + domains[j] + '"';
+                    }
+                    for (var i = 0; i < numberOfSites; i++) {
+                        chrome.tabs.executeScript(tab.id, {
+                            code: `
+                                    domain = [${domains}][${i}];
+                                    console.log("DOMAIN: " + domain);
+                                    check_website(String(domain)).then(rating => {
+                                        console.log("RATING: " + String(rating));
+                                        var icon_path;
+                                        switch (rating) {
+                                            case -1:
+                                                icon_path = 'cross_icon.png';
+                                                break;
+                                            case 0:
+                                                icon_path = 'exclaim_icon.png';
+                                                break;
+                                            case 1:
+                                                icon_path = 'tick_icon.png';
+                                                break;
+                                            default:
+                                                icon_path = 'question_icon.png';
+                                                break;
+                                        }
+                                        loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
+                                        console.log("LOADED:" + loaded);
+                                        if (!loaded) { 
+                                            //document.querySelectorAll("cite")[${i}].style.backgroundColor = "red";
+                                            document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' class='icon_acrevus"+String(${i})+"' style='z-index:100000'><img src = chrome-extension:/${id}/img/" + String(icon_path) + " style='width:24px;height:24px;vertical-align: middle;margin-left:8px;'></button>"
+                                            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(${i}))[0];
+                                            tmp1.id = ${i};
+                                            tmp1.domain = [${domains}][${i}];
+                                            tmp1.addEventListener("click", ${display_window}, false);
+                                        } 
+                                    });
                                 `
-                    }, function(res) {
-                        
-                        //
-                    });           
-                }
+                            }, function(ree) {});
+                    };
+                });
+                   
             });
         });    
     });

@@ -73,6 +73,39 @@ function check_website(site) {
         })
 }
 
+function check_website_gpt(site) {
+    /**
+     * Checks against the database to get GPT summary.
+     * 
+     * Param:
+     *      - site: string comprising the article itself. 
+
+     * Return:
+     *      GPT-3 Summary 
+     */
+
+
+    var docRef = db.collection("Sites").doc(site);
+
+    return docRef.get().then(
+        (doc) => {
+            console.log(doc)
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                
+                data = doc.data();
+                //console.log(data.rating);
+                return data.desc;
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+                return null;
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        })
+}
+
 
 function log_user_entry(site, rating) {
     /**
