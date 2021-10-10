@@ -14,11 +14,11 @@ function display_window(evt) {
     //check_website(String(domain)).then(rating => {
     check_website_gpt(site).then(summary => {
         if (summary == null) {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-        height:250px; position:relative;left:600px;top:-30px'>(Summary Unavailable) </div>"
+            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:250px; \
+        height:300px; position:relative;left:600px;top:-30px'>" + "<h1 style='color:white'>(Summary Unavailable)</h1>" + "</div>"
         } else {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-        height:250px; position:relative;left:600px;top:-30px'>" + summary + "</div>"
+            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:200px; \
+        height:300px; position:relative;left:600px;top:-30px';a>" + "<p style='color:white;font-size:10px'>" + summary + "</p>" + "</div>"
         }
     });
     //console.log("hello!");
