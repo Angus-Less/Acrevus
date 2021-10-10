@@ -76,37 +76,6 @@ function check_website(site) {
 }
 
 
-function log_user_entry(site, rating) {
-    /**
-     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
-     * 
-     * Param:
-     *      - site: the article being rated.
-     *      - rating: the user rating.
-     * Return:
-     *      - -1    if error occurred.
-     *      - 0     if successful.
-     */
-
-    // Assume rating = 1 or -1
-    if (rating != 1 && rating != -1) {
-        return -1
-    }
-
-    if (rating == 1) {
-        db.collection("UserRatings").doc(site).update({
-            "thumbs_up": increment(1) 
-        });
-    } else {
-        db.collection("UserRatings").doc(site).update({
-            "thumbs_down": increment(1) 
-        });
-    }
-    return 0
-}
-
-
-
 function log_website(URL, site, rating, description) {
     /**
      * Logs the website to the firestore database.
@@ -137,6 +106,36 @@ function log_website(URL, site, rating, description) {
 
     return 0;
 }
+
+function log_user_entry(site, rating) {
+    /**
+     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+     * 
+     * Param:
+     *      - site: the article being rated.
+     *      - rating: the user rating.
+     * Return:
+     *      - -1    if error occurred.
+     *      - 0     if successful.
+     */
+
+    // Assume rating = 1 or -1
+    if (rating != 1 && rating != -1) {
+        return -1
+    }
+
+    if (rating == 1) {
+        db.collection("UserRatings").doc(site).update({
+            "thumbs_up": increment(1) 
+        });
+    } else {
+        db.collection("UserRatings").doc(site).update({
+            "thumbs_down": increment(1) 
+        });
+    }
+    return 0
+}
+
 
 function get_site_user_rating(site) {
     /**
