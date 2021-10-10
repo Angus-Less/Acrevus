@@ -5,20 +5,42 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     }
   })
 
-// TODO: 1. Button to close window. 2. Display gpt summary. 3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
+
+// TODO:  3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
 function display_window(evt) {
+
+    function close_window(evt) {
+        idd = evt.currentTarget.id;
+        console.log("IDDD:" + String(idd));
+        if (document.querySelectorAll('.popup_acrevus'+String(idd)).length > 0) {
+            console.log("YEEEEEEEEEEEEEEET");
+            document.querySelectorAll('.popup_acrevus'+String(idd))[0].outerHTML = "";
+        }
+    }
+    
     var id = evt.currentTarget.id;
     console.log(id);
+    var clicked = document.getElementsByClassName("popup_acrevus"+String(id)).length != 0;
+    console.log("clicked:" + String(clicked));
     site = String(evt.currentTarget.domain);
     console.log(site);
     //check_website(String(domain)).then(rating => {
     check_website_gpt(site).then(summary => {
-        if (summary == null) {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-        height:250px; position:relative;left:600px;top:-30px'>(Summary Unavailable) </div>"
-        } else {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-        height:250px; position:relative;left:600px;top:-30px'>" + summary + "</div>"
+        if (!clicked) {
+            other_popups = document.querySelectorAll('[class^="popup_acrevus"]')
+            for (k = 0; k < other_popups.length; k++) {
+                other_popups[k].outerHTML = "";
+            }
+            if (summary == null) {
+                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
+            height:250px; position:relative;left:600px;top:-30px' z-index:100001> <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>(Summary Unavailable) </div>"
+            } else {
+                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
+            height:250px; position:relative;left:600px;top:-30px' z-index:100001> <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>" + summary + "</div>"
+            }
+            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
+            tmp1.id = String(id);
+            tmp1.addEventListener("click", close_window, false);
         }
     });
     //console.log("hello!");
