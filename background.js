@@ -15,10 +15,10 @@ function display_window(evt) {
     check_website_gpt(site).then(summary => {
         if (summary == null) {
             document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:250px; \
-        height:300px; position:relative;left:600px;top:-30px'>" + "<h1 style='color:white'>(Summary Unavailable)</h1>" + "</div>"
+        height:300px; position:relative;left:600px;top:-30px;z-index: 9999;a'>" + "<h1 style='color:white'>(Summary Unavailable)</h1>" + "</div>"
         } else {
             document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:200px; \
-        height:300px; position:relative;left:600px;top:-30px';a>" + "<p style='color:white;font-size:10px'>" + summary + "</p>" + "</div>"
+        height:300px; position:relative;left:600px;top:-30px;z-index: 9999;a'>" + "<p style='color:white;font-size:10px'>" + summary + "</p>" + "</div>"
         }
     });
     //console.log("hello!");
