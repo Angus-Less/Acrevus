@@ -225,14 +225,24 @@ function get_site_user_rating(site) {
      *          - 0:    whole site
      *          - 1:    specific article.
      */
-    var docRef = db.collection("UserRatings").doc(site);
+    // var docRef = db.collection("UserRatings").doc(site);
+    // docRef.get()
+    //     .then((docSnapshot) => {
+    //         if (docSnapshot.exists) {
+    //             return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+    //         } else {
+    //             return [-666, -666]
+    //         }
+    //     });
+
+    var docRef = db.collection("UserRatings").doc(site).get()
     docRef.get()
         .then((docSnapshot) => {
             if (docSnapshot.exists) {
-                return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+                return [docRef.get("thumbs_up"), docRef.get("thumbs_down")]
             } else {
                 return [-666, -666]
             }
-        }); 
+    });
 }
 
