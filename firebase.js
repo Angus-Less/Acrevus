@@ -124,16 +124,35 @@ function log_user_entry(site, rating) {
         return -1
     }
 
-    if (rating == 1) {
-        db.collection("UserRatings").doc(site).update({
-            "thumbs_up": firebase.firestore.FieldValue.increment(1)
-        });
-    } else {
-        db.collection("UserRatings").doc(site).update({
-            "thumbs_down": firebase.firestore.FieldValue.increment(1)
-        });
+    var docRef = db.collection("UserRatings").doc(site);
+    
+    if (docRef == null) {
+        if (rating == 1) {
+            db.collection("UserRatings").doc(site).set({
+                "thumbs_up": 1,
+                "thumbs_down": 0,
+            
+            })
+        } else {
+            db.collection("UserRatings").doc(site).set({
+                "thumbs_up": 0,
+                "thumbs_down": 1,
+            
+            })
+        }
+
+    } else  {
+        if (rating == 1) {
+            docRef.update({
+                "thumbs_up": firebase.firestore.FieldValue.increment(1)
+            });
+        } else {
+            docRef.update({
+                "thumbs_down": firebase.firestore.FieldValue.increment(1)
+            });
+        }
+        return 0
     }
-    return 0
 }
 
 
