@@ -31,6 +31,8 @@
     "img/question_icon.png",
     "img/exclaim_icon.png",
     "img/close_window.png",
+    "img/thumbs_down.png",
+    "img/thumbs_up.png",
     "firebase.js",
     "firebase-app.js",
     "firebase-firestore.js"

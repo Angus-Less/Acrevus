@@ -176,3 +176,77 @@ function get_site_user_rating(site) {
     
   return 0;
 }
+
+function log_user_entry(site, rating) {
+    /**
+     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+     * 
+     * Param:
+     *      - site: the article being rated.
+     *      - rating: the user rating.
+     * Return:
+     *      - -1    if error occurred.
+     *      - 0     if successful.
+     */
+
+    // Assume rating = 1 or -1
+    if (rating != 1 && rating != -1) {
+        return -1
+    }
+
+    var docRef = db.collection("UserRatings").doc(site);
+    
+    //console.log("AAAAAAAAAAAAAAAAAAA" + String(docRef) + String(docRef.exists));
+    if (!docRef.exists) {
+        if (rating == 1) {
+            db.collection("UserRatings").doc(site).set({
+                "thumbs_up": 1,
+                "thumbs_down": 0,
+            
+            })
+        } else {
+            db.collection("UserRatings").doc(site).set({
+                "thumbs_up": 0,
+                "thumbs_down": 1,
+            
+            })
+        }
+
+    } else  {
+        if (rating == 1) {
+            docRef.update({
+                "thumbs_up": firebase.firestore.FieldValue.increment(1)
+            });
+        } else {
+            docRef.update({
+                "thumbs_down": firebase.firestore.FieldValue.increment(1)
+            });
+        }
+        return 0
+    }
+}
+
+
+function get_site_user_rating(site) {
+    /**
+     * Gets the site's user rating and returns an array containing the rating.
+     * Both elements will be -666 if there is no user rating.
+     * 
+     * Edge cases:
+     *      - Possibly could have very high user rating and verified as misleading.
+     *        Also very serious problem with sandbagging and user 
+     * Param:
+     *      - site: the article page being referenced.
+     * Return:
+     *      - array of the base site and specific article.
+     *          - 0:    whole site
+     *          - 1:    specific article.
+     */
+    var docRef = db.collection("UserRatings").doc(site);
+
+    if (docRef == null) {
+        return [-666, -666]
+    }
+    return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+}
+

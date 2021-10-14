@@ -33,14 +33,19 @@ function display_window(evt) {
             }
             if (summary == null) {
                 document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-            height:250px; position:relative;left:600px;top:-30px' z-index:100001> <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>(Summary Unavailable) </div>"
+            height:250px; position:relative;left:600px;top:-30px' z-index:100001> \
+            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>\
+            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/thumbs_up.png class='acrevus_upvote' style='height:25px;width:25px;position:relative;left:10px;'></img>(Summary Unavailable) </div>"
             } else {
                 document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-            height:250px; position:relative;left:600px;top:-30px' z-index:100001> <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>" + summary + "</div>"
+            height:250px; position:relative;left:600px;top:-30px' z-index:100001> \
+            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>\
+            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/thumbs_up.png class='acrevus_upvote' style='height:25px;width:25px;position:relative;left:10px;'></img>" + summary + "</div>"
             }
             const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
             tmp1.id = String(id);
             tmp1.addEventListener("click", close_window, false);
+            log_user_entry(site, -1);
         }
     });
     //console.log("hello!");
