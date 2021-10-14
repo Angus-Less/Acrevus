@@ -126,11 +126,11 @@ function log_user_entry(site, rating) {
 
     if (rating == 1) {
         db.collection("UserRatings").doc(site).update({
-            "thumbs_up": increment(1) 
+            "thumbs_up": firebase.firestore.FieldValue.increment(1)
         });
     } else {
         db.collection("UserRatings").doc(site).update({
-            "thumbs_down": increment(1) 
+            "thumbs_down": firebase.firestore.FieldValue.increment(1)
         });
     }
     return 0
