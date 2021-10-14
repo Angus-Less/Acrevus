@@ -226,9 +226,13 @@ function get_site_user_rating(site) {
      *          - 1:    specific article.
      */
     var docRef = db.collection("UserRatings").doc(site);
-
-    if (docRef.exists != undefined)
-        return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
-    return [-666, -666]
+    docRef.get()
+        .then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+            } else {
+                return [-666, -666]
+            }
+        }); 
 }
 
