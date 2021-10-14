@@ -106,24 +106,6 @@ function check_website_gpt(site) {
         })
 }
 
-
-function log_user_entry(site, rating) {
-    /**
-     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
-     * 
-     * Param:
-     *      - site: the article being rated.
-     *      - rating: the user rating.
-     * Return:
-     *      - -1    if error occurred.
-     *      - 0     if successful.
-     */
-
-    return 0;
-}
-
-
-
 function log_website(URL, site, rating, description) {
     /**
      * Logs the website to the firestore database.
@@ -195,35 +177,36 @@ function log_user_entry(site, rating) {
     }
 
     var docRef = db.collection("UserRatings").doc(site);
-    
-    //console.log("AAAAAAAAAAAAAAAAAAA" + String(docRef) + String(docRef.exists));
-    if (docRef.exists != undefined) {
-        if (rating == 1) {
-            db.collection("UserRatings").doc(site).set({
-                "thumbs_up": 1,
-                "thumbs_down": 0,
-            })
-        } else {
-            db.collection("UserRatings").doc(site).set({
-                "thumbs_up": 0,
-                "thumbs_down": 1,
-            
-            })
-        }
-
-    } else  {
-        console.log("HELLO THERE");
-        if (rating == 1) {
-            docRef.update({
-                "thumbs_up": firebase.firestore.FieldValue.increment(1)
-            });
-        } else {
-            docRef.update({
-                "thumbs_down": firebase.firestore.FieldValue.increment(1)
-            });
-        }
-        return 0
-    }
+    docRef.get()
+        .then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                console.log("HELLO THERE");
+                if (rating == 1) {
+                    docRef.update({
+                        "thumbs_up": firebase.firestore.FieldValue.increment(1)
+                    });
+                } else {
+                    docRef.update({
+                        "thumbs_down": firebase.firestore.FieldValue.increment(1)
+                    });
+                }
+                return 0
+            } else {
+                if (rating == 1) {
+                    docRef.set({
+                        "thumbs_up": 1,
+                        "thumbs_down": 0,
+                    })
+                } else {
+                    console.log("NEW SITE THUMBS DOWN")
+                    docRef.set({
+                        "thumbs_up": 0,
+                        "thumbs_down": 1,
+                    
+                    })
+                } 
+            }
+    });
 }
 
 
@@ -244,9 +227,8 @@ function get_site_user_rating(site) {
      */
     var docRef = db.collection("UserRatings").doc(site);
 
-    if (docRef == null) {
-        return [-666, -666]
-    }
-    return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+    if (docRef.exists != undefined)
+        return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
+    return [-666, -666]
 }
 
