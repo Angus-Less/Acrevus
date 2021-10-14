@@ -197,12 +197,11 @@ function log_user_entry(site, rating) {
     var docRef = db.collection("UserRatings").doc(site);
     
     //console.log("AAAAAAAAAAAAAAAAAAA" + String(docRef) + String(docRef.exists));
-    if (!docRef.exists) {
+    if (docRef.exists != undefined) {
         if (rating == 1) {
             db.collection("UserRatings").doc(site).set({
                 "thumbs_up": 1,
                 "thumbs_down": 0,
-            
             })
         } else {
             db.collection("UserRatings").doc(site).set({
@@ -213,6 +212,7 @@ function log_user_entry(site, rating) {
         }
 
     } else  {
+        console.log("HELLO THERE");
         if (rating == 1) {
             docRef.update({
                 "thumbs_up": firebase.firestore.FieldValue.increment(1)
