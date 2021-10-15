@@ -45,10 +45,17 @@ function display_window(evt) {
             const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
             tmp1.id = String(id);
             tmp1.addEventListener("click", close_window, false);
-            log_user_entry(site, -1);
+
+            // log_user_entry(site, -1);
+            var res_promise = get_site_user_rating(site)
+            res_promise.then(
+                function(res) {
+                    console.log('thumb up in background: ', res[0])
+                    console.log('thumb down in background: ', res[1])
+                }
+            ) 
         }
     });
-    //console.log("hello!");
 }
 
 // duplicate code ftw

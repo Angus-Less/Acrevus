@@ -56,7 +56,6 @@ function check_website(site) {
 
     return docRef.get().then(
         (doc) => {
-            console.log(doc)
             if (doc.exists) {
                 console.log("Document data:", doc.data());
                 
@@ -140,25 +139,6 @@ function log_website(URL, site, rating, description) {
     return 0;
 }
 
-function get_site_user_rating(site) {
-    /**
-     * Gets the site's user rating and returns an array containing the rating.
-     * Both elements will be -666 if there is no user rating.
-     * 
-     * Edge cases:
-     *      - Possibly could have very high user rating and verified as misleading.
-     *        Also very serious problem with sandbagging and user 
-     * Param:
-     *      - site: the article page being referenced.
-     * Return:
-     *      - array of the base site and specific article.
-     *          - 0:    whole site
-     *          - 1:    specific article.
-     */
-    
-  return 0;
-}
-
 function log_user_entry(site, rating) {
     /**
      * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
@@ -190,7 +170,7 @@ function log_user_entry(site, rating) {
                         "thumbs_down": firebase.firestore.FieldValue.increment(1)
                     });
                 }
-                return 0
+                
             } else {
                 if (rating == 1) {
                     docRef.set({
@@ -207,42 +187,32 @@ function log_user_entry(site, rating) {
                 } 
             }
     });
+    return 0
 }
 
 
-function get_site_user_rating(site) {
+function get_site_user_rating(site){
     /**
-     * Gets the site's user rating and returns an array containing the rating.
-     * Both elements will be -666 if there is no user rating.
+     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
      * 
-     * Edge cases:
-     *      - Possibly could have very high user rating and verified as misleading.
-     *        Also very serious problem with sandbagging and user 
      * Param:
-     *      - site: the article page being referenced.
+     *      - site: the article being rated.
      * Return:
-     *      - array of the base site and specific article.
-     *          - 0:    whole site
-     *          - 1:    specific article.
+     *      - a promise containing the result 
+     *             [thumb_up, thumb_down] or [-666, -666] if not exist   
      */
-    // var docRef = db.collection("UserRatings").doc(site);
-    // docRef.get()
-    //     .then((docSnapshot) => {
-    //         if (docSnapshot.exists) {
-    //             return [docRef.get().data().thumbs_down, docRef.get().data().thumbs_up] 
-    //         } else {
-    //             return [-666, -666]
-    //         }
-    //     });
-
-    var docRef = db.collection("UserRatings").doc(site).get()
-    docRef.get()
-        .then((docSnapshot) => {
-            if (docSnapshot.exists) {
-                return [docRef.get("thumbs_up"), docRef.get("thumbs_down")]
-            } else {
-                return [-666, -666]
-            }
-    });
-}
-
+    return new Promise(function (resolve) {
+        var docRef = db.collection("UserRatings").doc(site)
+        var rating = null
+        docRef.get().then(
+            (doc) => {
+                if (doc.exists) {
+                    rating = [doc.data().thumbs_up, doc.data().thumbs_down]
+                    resolve(rating) 
+                } else {
+                    rating = [-666, -666]
+                    resolve(rating) 
+                }
+            }).catch(err => console.log('huy vip pro dark cap', err));
+    })}
+    
