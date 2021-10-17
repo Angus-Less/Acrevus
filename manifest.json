@@ -33,6 +33,9 @@
     "img/close_window.png",
     "img/thumbs_down.png",
     "img/thumbs_up.png",
+    "img/window.png",
+    "img/no_button.png", 
+    "img/yes_button.png",
     "firebase.js",
     "firebase-app.js",
     "firebase-firestore.js"
