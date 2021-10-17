@@ -32,15 +32,11 @@ function display_window(evt) {
                 other_popups[k].outerHTML = "";
             }
             if (summary == null) {
-                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-            height:250px; position:relative;left:600px;top:-30px' z-index:100001> \
-            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>\
-            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/thumbs_up.png class='acrevus_upvote' style='height:25px;width:25px;position:relative;left:10px;'></img>(Summary Unavailable) </div>"
+                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+            height:446px; position:relative;left:600px;top:-30px' z-index:100001> (Summary Unavailable) </div>"
             } else {
-                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-color: white; width:200px; \
-            height:250px; position:relative;left:600px;top:-30px' z-index:100001> \
-            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/close_window.png class='acrevus_close' style='height:25px;width:25px;position:relative;left:175px;'></img>\
-            <img src = chrome-extension:/"+String(chrome.runtime.id)+"/img/thumbs_up.png class='acrevus_upvote' style='height:25px;width:25px;position:relative;left:10px;'></img>" + summary + "</div>"
+                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+            height:446px; position:relative;left:600px;top:-30px' z-index:100001>" + summary + "</div>"
             }
             const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
             tmp1.id = String(id);
