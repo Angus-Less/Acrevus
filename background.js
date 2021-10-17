@@ -31,9 +31,6 @@ function display_window(evt) {
             for (k = 0; k < other_popups.length; k++) {
                 other_popups[k].outerHTML = "";
             }
-            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
-            tmp1.id = String(id);
-            tmp1.addEventListener("click", close_window, false);
 
             var thumb_up = null;
             var thumb_down = null;
@@ -54,13 +51,20 @@ function display_window(evt) {
                     }
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-                    height:446px; position:relative;left:600px;top:-30px' z-index:100001> \
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999' > \
                     (Summary Unavailable). " + string + "</div>"
-                    
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-168px;z-index:9999' ></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-140px;z-index:9999' ></div>"
                     } else {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-                    height:446px; position:relative;left:600px;top:-30px' z-index:100001> \
-                    "+ summary + ". " + string + "</div>"
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999' > \
+                    "+ summary + ". " + string + "</div>";
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-168px;z-index:9999' ></div>"
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-140px;z-index:9999' ></div>"
                     }
                 }
             ) 
