@@ -5,23 +5,76 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     }
   })
 
-// TODO: 1. Button to close window. 2. Display gpt summary. 3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
+
+// TODO:  3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
 function display_window(evt) {
+
+    function close_window(evt) {
+        idd = evt.currentTarget.id;
+        console.log("IDDD:" + String(idd));
+        if (document.querySelectorAll('.popup_acrevus'+String(idd)).length > 0) {
+            console.log("YEEEEEEEEEEEEEEET");
+            document.querySelectorAll('.popup_acrevus'+String(idd))[0].outerHTML = "";
+        }
+    }
+    
     var id = evt.currentTarget.id;
     console.log(id);
+    var clicked = document.getElementsByClassName("popup_acrevus"+String(id)).length != 0;
+    console.log("clicked:" + String(clicked));
     site = String(evt.currentTarget.domain);
     console.log(site);
     //check_website(String(domain)).then(rating => {
     check_website_gpt(site).then(summary => {
-        if (summary == null) {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:250px; \
-        height:300px; position:relative;left:600px;top:-30px;z-index: 9999;a'>" + "<h1 style='color:white'>(Summary Unavailable)</h1>" + "</div>"
-        } else {
-            document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div id='popup_acrevus"+String(id) + "' style='background-color: black; width:200px; \
-        height:300px; position:relative;left:600px;top:-30px;z-index: 9999;a'>" + "<p style='color:white;font-size:10px'>" + summary + "</p>" + "</div>"
+        if (!clicked) {
+            other_popups = document.querySelectorAll('[class^="popup_acrevus"]')
+            for (k = 0; k < other_popups.length; k++) {
+                other_popups[k].outerHTML = "";
+            }
+
+            var thumb_up = null;
+            var thumb_down = null;
+
+            var res_promise = get_site_user_rating(site);
+            res_promise.then(
+                function(res) {
+                    console.log('thumb up in background: ', res[0])
+                    thumb_up = res[0]
+                    console.log('thumb down in background: ', res[1])
+                    thumb_down = res[1]
+                    var string = null
+                    if (thumb_up === -666) {
+                        string = "User rating is unavailable for this website."
+                    } else {
+                        var stars = (thumb_up/(thumb_up + thumb_down) * 5).toFixed(2)
+                        string = "Out of " + (thumb_up + thumb_down) + " ratings, " + site + " was rated " + stars + " out of 5."
+                    }
+                    if (summary == null) {
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999' > \
+                    (Summary Unavailable). " + string + "</div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-168px;z-index:9999' ></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-140px;z-index:9999' ></div>"
+                    } else {
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999' > \
+                    "+ summary + ". " + string + "</div>";
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-168px;z-index:9999' ></div>"
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-140px;z-index:9999' ></div>"
+                    }
+                }
+            ) 
+            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
+            tmp1.id = String(id);
+            tmp1.addEventListener("click", close_window, false);
+
+            // log_user_entry(site, -1);   
         }
     });
-    //console.log("hello!");
 }
 
 // duplicate code ftw

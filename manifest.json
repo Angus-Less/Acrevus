@@ -30,6 +30,9 @@
     "img/tick_icon.png",
     "img/question_icon.png",
     "img/exclaim_icon.png",
+    "img/window.png",
+    "img/no_button.png", 
+    "img/yes_button.png",
     "firebase.js",
     "firebase-app.js",
     "firebase-firestore.js"

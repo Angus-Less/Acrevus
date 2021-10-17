@@ -56,7 +56,6 @@ function check_website(site) {
 
     return docRef.get().then(
         (doc) => {
-            console.log(doc)
             if (doc.exists) {
                 console.log("Document data:", doc.data());
                 
@@ -106,24 +105,6 @@ function check_website_gpt(site) {
         })
 }
 
-
-function log_user_entry(site, rating) {
-    /**
-     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
-     * 
-     * Param:
-     *      - site: the article being rated.
-     *      - rating: the user rating.
-     * Return:
-     *      - -1    if error occurred.
-     *      - 0     if successful.
-     */
-
-    return 0;
-}
-
-
-
 function log_website(URL, site, rating, description) {
     /**
      * Logs the website to the firestore database.
@@ -158,21 +139,80 @@ function log_website(URL, site, rating, description) {
     return 0;
 }
 
-function get_site_user_rating(site) {
+function log_user_entry(site, rating) {
     /**
-     * Gets the site's user rating and returns an array containing the rating.
-     * Both elements will be -666 if there is no user rating.
+     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
      * 
-     * Edge cases:
-     *      - Possibly could have very high user rating and verified as misleading.
-     *        Also very serious problem with sandbagging and user 
      * Param:
-     *      - site: the article page being referenced.
+     *      - site: the article being rated.
+     *      - rating: the user rating.
      * Return:
-     *      - array of the base site and specific article.
-     *          - 0:    whole site
-     *          - 1:    specific article.
+     *      - -1    if error occurred.
+     *      - 0     if successful.
      */
-    
-  return 0;
+
+    // Assume rating = 1 or -1
+    if (rating != 1 && rating != -1) {
+        return -1
+    }
+
+    var docRef = db.collection("UserRatings").doc(site);
+    docRef.get()
+        .then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                console.log("HELLO THERE");
+                if (rating == 1) {
+                    docRef.update({
+                        "thumbs_up": firebase.firestore.FieldValue.increment(1)
+                    });
+                } else {
+                    docRef.update({
+                        "thumbs_down": firebase.firestore.FieldValue.increment(1)
+                    });
+                }
+                
+            } else {
+                if (rating == 1) {
+                    docRef.set({
+                        "thumbs_up": 1,
+                        "thumbs_down": 0,
+                    })
+                } else {
+                    console.log("NEW SITE THUMBS DOWN")
+                    docRef.set({
+                        "thumbs_up": 0,
+                        "thumbs_down": 1,
+                    
+                    })
+                } 
+            }
+    });
+    return 0
 }
+
+
+function get_site_user_rating(site){
+    /**
+     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+     * 
+     * Param:
+     *      - site: the article being rated.
+     * Return:
+     *      - a promise containing the result 
+     *             [thumb_up, thumb_down] or [-666, -666] if not exist   
+     */
+    return new Promise(function (resolve) {
+        var docRef = db.collection("UserRatings").doc(site)
+        var rating = null
+        docRef.get().then(
+            (doc) => {
+                if (doc.exists) {
+                    rating = [doc.data().thumbs_up, doc.data().thumbs_down]
+                    resolve(rating) 
+                } else {
+                    rating = [-666, -666]
+                    resolve(rating) 
+                }
+            }).catch(err => console.log('error', err));
+    })}
+    
