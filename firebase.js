@@ -213,6 +213,6 @@ function get_site_user_rating(site){
                     rating = [-666, -666]
                     resolve(rating) 
                 }
-            }).catch(err => console.log('huy vip pro dark cap', err));
+            }).catch(err => console.log('error', err));
     })}
     

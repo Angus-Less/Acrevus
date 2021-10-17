@@ -31,25 +31,44 @@ function display_window(evt) {
             for (k = 0; k < other_popups.length; k++) {
                 other_popups[k].outerHTML = "";
             }
-            if (summary == null) {
-                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-            height:446px; position:relative;left:600px;top:-30px' z-index:100001> (Summary Unavailable) </div>"
-            } else {
-                document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-            height:446px; position:relative;left:600px;top:-30px' z-index:100001>" + summary + "</div>"
-            }
             const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
             tmp1.id = String(id);
             tmp1.addEventListener("click", close_window, false);
 
-            // log_user_entry(site, -1);
-            var res_promise = get_site_user_rating(site)
+            var thumb_up = null;
+            var thumb_down = null;
+
+            var res_promise = get_site_user_rating(site);
             res_promise.then(
                 function(res) {
                     console.log('thumb up in background: ', res[0])
+                    thumb_up = res[0]
                     console.log('thumb down in background: ', res[1])
+                    thumb_down = res[1]
+                    var string = null
+                    if (thumb_up === -666) {
+                        string = "User rating is unavailable for this website."
+                    } else {
+                        var stars = (thumb_up/(thumb_up + thumb_down) * 5).toFixed(2)
+                        string = "Out of " + (thumb_up + thumb_down) + " ratings, " + site + " was rated " + stars + " out of 5."
+                    }
+                    if (summary == null) {
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px' z-index:100001> \
+                    (Summary Unavailable). " + string + "</div>"
+                    
+                    } else {
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px' z-index:100001> \
+                    "+ summary + ". " + string + "</div>"
+                    }
                 }
             ) 
+            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
+            tmp1.id = String(id);
+            tmp1.addEventListener("click", close_window, false);
+
+            // log_user_entry(site, -1);   
         }
     });
 }
