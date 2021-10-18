@@ -15,6 +15,9 @@ function display_window(evt) {
         if (document.querySelectorAll('.popup_acrevus'+String(idd)).length > 0) {
             console.log("YEEEEEEEEEEEEEEET");
             document.querySelectorAll('.popup_acrevus'+String(idd))[0].outerHTML = "";
+            document.querySelectorAll('.yes_btn'+String(idd))[0].outerHTML = "";
+            document.querySelectorAll('.no_btn'+String(idd))[0].outerHTML = "";
+            document.querySelectorAll('.star'+String(idd))[0].outerHTML = "";
         }
     }
     
@@ -28,8 +31,14 @@ function display_window(evt) {
     check_website_gpt(site).then(summary => {
         if (!clicked) {
             other_popups = document.querySelectorAll('[class^="popup_acrevus"]')
+            yes_btns = document.querySelectorAll('[class^="yes_btn"]')
+            no_btns = document.querySelectorAll('[class^="no_btn"]')
+            star_btns = document.querySelectorAll('[class^="star"]')
             for (k = 0; k < other_popups.length; k++) {
                 other_popups[k].outerHTML = "";
+                yes_btns[k].outerHTML = "";
+                no_btns[k].outerHTML = "";
+                star_btns[k].outerHTML = "";
             }
 
             var thumb_up = null;
@@ -56,6 +65,8 @@ function display_window(evt) {
                         height:28px; position:relative;left:610px;top:-168px;z-index:9999'></div>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
                         height:28px; position:relative;left:740px;top:-140px;z-index:9999'></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='star"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/full_star.png\"); width:35px; \
+                        height:32px; position:relative;left:640px;top:-305px;z-index:9999;background-size: 35px;' ></div>"
                     } else {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
                     height:446px; position:relative;left:600px;top:-30px;z-index:9999'> \
@@ -64,13 +75,35 @@ function display_window(evt) {
                         height:28px; position:relative;left:610px;top:-168px;z-index:9999'></div>"
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
                         height:28px; position:relative;left:740px;top:-140px;z-index:9999'></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='star"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/full_star.png\"); width:35px; \
+                        height:32px; position:relative;left:640px;top:-305px;z-index:9999;background-size: 35px;' ></div>"
                     }
+                    if (summary == null) {
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999;' > \
+                    (Summary Unavailable). " + user_rating_string + "</div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-204px;z-index:9999' ></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-176px;z-index:9999' ></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='star"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/full_star.png\"); width:35px; \
+                        height:32px; position:relative;left:640px;top:-305px;z-index:9999;background-size: 35px;' ></div>"
+                    } else { 
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
+                    height:446px; position:relative;left:600px;top:-30px;z-index:9999' > \
+                    "+ summary + ". " + user_rating_string + "</div>";
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='yes_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
+                        height:28px; position:relative;left:610px;top:-204px;z-index:9999' ></div>"
+                    document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='no_btn"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
+                        height:28px; position:relative;left:740px;top:-176px;z-index:9999' ></div>"
+                        document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<div class='star"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/full_star.png\"); width:35px; \
+                        height:32px; position:relative;left:640px;top:-305px;z-index:9999;background-size: 35px;' ></div>"
+                    }
+                    const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
+                    tmp1.id = String(id);
+                    tmp1.addEventListener("click", close_window, false);
                 }
             ) 
-            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
-            tmp1.id = String(id);
-            tmp1.addEventListener("click", close_window, false);
-
             // log_user_entry(site, -1);   
         }
     });

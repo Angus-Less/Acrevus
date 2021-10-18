@@ -33,6 +33,9 @@
     "img/window.png",
     "img/no_button.png", 
     "img/yes_button.png",
+    "img/empty_star.png",
+    "img/half_star.png",
+    "img/full_star.png",
     "firebase.js",
     "firebase-app.js",
     "firebase-firestore.js"
