@@ -77,31 +77,13 @@ function display_window(evt) {
                         ratingDescription = "Out of " + (thumb_up + thumb_down) + " ratings, " + site + " was rated " + stars + " out of 5."
                     }
                     var star_amounts = ["empty_star", "empty_star", "empty_star", "empty_star", "empty_star"]
-                    if (stars >= 1) {
-                        star_amounts[0] = "full_star";
-                    } else if (stars >= 0.5) {
-                        star_amounts[0] = "half_star";
-                    }
-                    if (stars >= 2) {
-                        star_amounts[1] = "full_star";
-                    } else if (stars >= 1.5) {
-                        star_amounts[1] = "half_star";
-                    }
-                    if (stars >= 3) {
-                        star_amounts[2] = "full_star";
-                    } else if (stars >= 2.5) {
-                        star_amounts[2] = "half_star";
-                    }
-                    if (stars >= 4) {
-                        star_amounts[3] = "full_star";
-                    } else if (stars >= 3.5) {
-                        star_amounts[3] = "half_star";
-                    }
-                    if (stars >= 5) {
-                        star_amounts[4] = "full_star";
-                    } else if (stars >= 4.5) {
-                        star_amounts[4] = "half_star";
-                    }
+                    for (var i = 0; i < star_amounts.length; i++) {
+                        if (stars >= i + 1) {
+                            star_amounts[i] = "full_star";
+                        } else if (stars >= i + 0.5) {
+                            star_amounts[i] = "half_star";
+                        }
+                    } 
 
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
