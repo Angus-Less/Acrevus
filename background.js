@@ -58,12 +58,10 @@ function display_window(evt) {
             no_btns = document.querySelectorAll('[class^="no_btn"]')
             star_btns = document.querySelectorAll('[class^="star"]')
             for (k = 0; k < other_popups.length; k++) {
-                other_popups[k].outerHTML = "";
-                yes_btns[k].outerHTML = "";
-                no_btns[k].outerHTML = "";
-            }
-            for (i = 0; i < star_btns.length; i++) {
-                star_btns[i].outerHTML = "";
+                var other_id = other_popups[k].className.split("acrevus")[1];
+                other_popups[k].innerHTML = "";
+                const tmp1 = document.getElementsByClassName("icon_acrevus" + String(other_id))[0];
+                tmp1.click();                    
             }
 
             var thumb_up = null;
