@@ -9,8 +9,10 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 // TODO:  3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
 function display_window(evt) {
 
-    function close_window(evt) {
-        idd = evt.currentTarget.id;
+    function close_window(evt2) {
+        idd = evt2.currentTarget.id;
+        domain = evt2.currentTarget.domain;
+        rating = evt2.currentTarget.rating;
         console.log("IDDD:" + String(idd));
         if (document.querySelectorAll('.popup_acrevus'+String(idd)).length > 0) {
             document.querySelectorAll('.popup_acrevus'+String(idd))[0].outerHTML = "";
@@ -21,6 +23,11 @@ function display_window(evt) {
             document.querySelectorAll('.star3'+String(idd))[0].outerHTML = "";
             document.querySelectorAll('.star4'+String(idd))[0].outerHTML = "";
             document.querySelectorAll('.star5'+String(idd))[0].outerHTML = "";
+            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(idd))[0];
+            tmp1.id = idd;
+            tmp1.domain = domain;
+            tmp1.rating = rating;
+            tmp1.addEventListener("click", display_window, false);
         }
     }
 
@@ -95,7 +102,7 @@ function display_window(evt) {
 
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-                        height:446px; position:relative;left:600px;top:-30px;z-index:9999'>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" 
+                        height:446px; position:relative;left:600px;top:-30px;z-index:9999'>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:250px;width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" 
                         + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) +"</p></div>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
                         height:28px; position:relative;left:610px;top:-260px;z-index:9999'></div></a>"
@@ -114,7 +121,7 @@ function display_window(evt) {
                     } else {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
                     height:446px; position:relative;left:600px;top:-30px;z-index:9999'> \
-                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>" + summary + "</p>" + ". " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
+                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:250px;width:90%;word-wrap:break-word;'>" + summary + "</p>" + ". " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
                     "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) + "</p></div>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
                         height:28px; position:relative;left:610px;top:-260px;z-index:9999'></div></a>"
@@ -141,6 +148,8 @@ function display_window(evt) {
                    
                     const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
                     tmp1.id = String(id);
+                    tmp1.rating = rating;
+                    tmp1.domain = String(site);
                     tmp1.addEventListener("click", close_window, false);
                 }
             )   
