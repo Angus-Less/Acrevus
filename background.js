@@ -38,6 +38,7 @@ function display_window(evt) {
 
     var id = evt.currentTarget.id;
     console.log(id);
+    var rating = evt.currentTarget.rating;
     var clicked = document.getElementsByClassName("popup_acrevus"+String(id)).length != 0;
     console.log("clicked:" + String(clicked));
     site = String(evt.currentTarget.domain);
@@ -77,67 +78,58 @@ function display_window(evt) {
                         ratingDescription = "Out of " + (thumb_up + thumb_down) + " ratings, " + site + " was rated " + stars + " out of 5."
                     }
                     var star_amounts = ["empty_star", "empty_star", "empty_star", "empty_star", "empty_star"]
-                    if (stars >= 1) {
-                        star_amounts[0] = "full_star";
-                    } else if (stars >= 0.5) {
-                        star_amounts[0] = "half_star";
+                    for (var i = 0; i < star_amounts.length; i++) {
+                        if (stars >= i + 1) {
+                            star_amounts[i] = "full_star";
+                        } else if (stars >= i + 0.5) {
+                            star_amounts[i] = "half_star";
+                        }
+                    } 
+                    var ratingDict = {
+                        null : " is not present in the Wikipedia website reliability data.",
+                        "-1" : " is considered an untrusted source of information by Wikipedia.",
+                        "0" : " is considered a questionable source of information by Wikipedia.",
+                        "1" : " is considered a trustworthy source of information by Wikipedia."
                     }
-                    if (stars >= 2) {
-                        star_amounts[1] = "full_star";
-                    } else if (stars >= 1.5) {
-                        star_amounts[1] = "half_star";
-                    }
-                    if (stars >= 3) {
-                        star_amounts[2] = "full_star";
-                    } else if (stars >= 2.5) {
-                        star_amounts[2] = "half_star";
-                    }
-                    if (stars >= 4) {
-                        star_amounts[3] = "full_star";
-                    } else if (stars >= 3.5) {
-                        star_amounts[3] = "half_star";
-                    }
-                    if (stars >= 5) {
-                        star_amounts[4] = "full_star";
-                    } else if (stars >= 4.5) {
-                        star_amounts[4] = "half_star";
-                    }
+                    var trustworthy_rating = ratingDict[rating];
 
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
-                        height:446px; position:relative;left:600px;top:-30px;z-index:9999'>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" + "</div>"
+                        height:446px; position:relative;left:600px;top:-30px;z-index:9999'>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" 
+                        + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) +"</p></div>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
-                        height:28px; position:relative;left:610px;top:-168px;z-index:9999'></div></a>"
+                        height:28px; position:relative;left:610px;top:-260px;z-index:9999'></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='no_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
-                        height:28px; position:relative;left:740px;top:-140px;z-index:9999'></div></a>"
+                        height:28px; position:relative;left:740px;top:-232px;z-index:9999'></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star1"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[0]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:635px;top:-433px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:635px;top:-438px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star2"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[1]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:675px;top:-401px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:675px;top:-406px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star3"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[2]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:715px;top:-369px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:715px;top:-374px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star4"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[3]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:755px;top:-337px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:755px;top:-342px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star5"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[4]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:795px;top:-305px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:795px;top:-310px;z-index:9999;background-size: 35px;' ></div></a>"
                     } else {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
                     height:446px; position:relative;left:600px;top:-30px;z-index:9999'> \
-                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>" + summary + "</p>" + ". " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + "</div>";
+                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:309px;width:90%;word-wrap:break-word;'>" + summary + "</p>" + ". " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
+                    "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) + "</p></div>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
-                        height:28px; position:relative;left:610px;top:-168px;z-index:9999'></div></a>"
+                        height:28px; position:relative;left:610px;top:-260px;z-index:9999'></div></a>"
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='no_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
-                        height:28px; position:relative;left:740px;top:-140px;z-index:9999'></div></a>"
+                        height:28px; position:relative;left:740px;top:-232px;z-index:9999'></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star1"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[0]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:635px;top:-433px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:635px;top:-438px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star2"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[1]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:675px;top:-401px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:675px;top:-406px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star3"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[2]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:715px;top:-369px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:715px;top:-374px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star4"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[3]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:755px;top:-337px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:755px;top:-342px;z-index:9999;background-size: 35px;' ></div></a>"
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='star5"+String(id) + "' style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[4]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:795px;top:-305px;z-index:9999;background-size: 35px;' ></div></a>"
+                        height:32px; position:relative;left:795px;top:-310px;z-index:9999;background-size: 35px;' ></div></a>"
                     }
                     const tmp2 = document.getElementsByClassName("yes_btn" + String(id))[0];
                     tmp2.domain = String(site);
@@ -247,6 +239,7 @@ function get_domain_tags() {
                                             const tmp1 = document.getElementsByClassName("icon_acrevus" + String(${i}))[0];
                                             tmp1.id = ${i};
                                             tmp1.domain = [${domains}][${i}];
+                                            tmp1.rating = rating;
                                             tmp1.addEventListener("click", ${display_window}, false);
                                         } 
                                     });
