@@ -152,7 +152,7 @@ function log_user_entry(site, rating) {
      */
 
     // Assume rating = 1 or -1
-    if (rating != 1 && rating != -1) {
+    if (rating != -1 && rating != 1) {
         return -1
     }
 
@@ -160,7 +160,6 @@ function log_user_entry(site, rating) {
     docRef.get()
         .then((docSnapshot) => {
             if (docSnapshot.exists) {
-                console.log("HELLO THERE");
                 if (rating == 1) {
                     docRef.update({
                         "thumbs_up": firebase.firestore.FieldValue.increment(1)
