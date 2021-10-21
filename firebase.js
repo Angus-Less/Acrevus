@@ -105,6 +105,40 @@ function check_website_gpt(site) {
         })
 }
 
+function get_name(site) {
+    /**
+     * If the site is found in the Wikipedia sources, return its proper name
+     * 
+     * Param:
+     *      - site: string comprising the article itself. 
+
+     * Return:
+     *      - string: name of site
+     */
+
+
+     var docRef = db.collection("Sites").doc(site);
+
+    return docRef.get().then(
+        (doc) => {
+            console.log(doc)
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                
+                data = doc.data();
+                //console.log(data.rating);
+                return data.name;
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+                return null;
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        })
+}
+
+
 function log_website(URL, site, rating, description) {
     /**
      * Logs the website to the firestore database.
