@@ -81,7 +81,7 @@ function display_window(evt) {
                         if (stars >= i + 1) {
                             star_amounts[i] = "full_star";
                         } else if (stars >= i + 0.5) {
-                            star_amounts[i] = "full_star";
+                            star_amounts[i] = "half_star";
                         }
                     } 
 
