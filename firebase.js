@@ -14,18 +14,17 @@ firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
 
-async function log_website(site, rating, description) {
-    /**
-     * Logs the website to the firestore database.
-     * 
-     * Param:
-     *      - site:
-     *      - rating:
-     *      - description:
-     * Return:
-     *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
-     */
-
+ /**
+ * Logs the website to the firestore database.
+ * 
+ * Param:
+ *      - site:
+ *      - rating:
+ *      - description:
+ * Return:
+ *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
+ */
+async function log_website(site) {
     // Shortened macro for the entire website.
     var site = '';
     const websiteReference = db.collection('Blacklisted_sites').description(`${site}`).get();
@@ -34,24 +33,22 @@ async function log_website(site, rating, description) {
 
 }
 
+
+ /**
+ * Checks against the database if either this specific article is flagged,
+ * or if the website is flagged. 
+ *
+ * THIS IS ASYNC AND I DON'T KNOW WHAT THAT MEANS
+ * 
+ * Param:
+ *      - site: string comprising the article itself. 
+ * Return:
+ *      - -1    if website is flagged.
+ *      - 0     if site is disputed.
+ *      - 1     if website is endorsed.
+ *      - null  if website is unknown
+ */
 function check_website(site) {
-    /**
-     * Checks against the database if either this specific article is flagged,
-     * or if the website is flagged. 
-     *
-     * THIS IS ASYNC AND I DON'T KNOW WHAT THAT MEANS
-     * 
-     * Param:
-     *      - site: string comprising the article itself. 
-
-     * Return:
-     *      - -1    if website is flagged.
-     *      - 0     if site is disputed.
-     *      - 1     if website is endorsed.
-     *      - null  if website is unknown
-     */
-
-
     var docRef = db.collection("Sites").doc(site);
 
     return docRef.get().then(
@@ -72,18 +69,15 @@ function check_website(site) {
         })
 }
 
+ /**
+ * Checks against the database to get GPT summary.
+ * 
+ * Param:
+ *      - site: string comprising the article itself. 
+ * Return:
+ *      GPT-3 Summary 
+ */
 function check_website_gpt(site) {
-    /**
-     * Checks against the database to get GPT summary.
-     * 
-     * Param:
-     *      - site: string comprising the article itself. 
-
-     * Return:
-     *      GPT-3 Summary 
-     */
-
-
     var docRef = db.collection("Sites").doc(site);
 
     return docRef.get().then(
@@ -105,18 +99,15 @@ function check_website_gpt(site) {
         })
 }
 
+/**
+ * If the site is found in the Wikipedia sources, return its proper name
+ * 
+ * Param:
+ *      - site: string comprising the article itself. 
+* Return:
+*      - string: name of site
+*/
 function get_name(site) {
-    /**
-     * If the site is found in the Wikipedia sources, return its proper name
-     * 
-     * Param:
-     *      - site: string comprising the article itself. 
-
-     * Return:
-     *      - string: name of site
-     */
-
-
      var docRef = db.collection("Sites").doc(site);
 
     return docRef.get().then(
@@ -138,23 +129,19 @@ function get_name(site) {
         })
 }
 
-
+ /**
+ * Logs the website to the firestore database.
+ * 
+ * Param:
+ *      - URL: string
+ *      - site: string w/ name
+ *      - rating: int
+ *      - description: words
+ *      
+ * Return:
+ *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
+ */
 function log_website(URL, site, rating, description) {
-    /**
-     * Logs the website to the firestore database.
-     * 
-     * Param:
-     *      - URL: string
-     *      - site: string w/ name
-     *      - rating: int
-     *      - description: words
-     *      
-     * Return:
-     *      - 0 if successful, -1 if an error occurred (as well as error dump to console).
-     */
-
-
-
     // Add a new document in collection "cities"
     db.collection("Sites").doc(URL).set({
         name: site,
@@ -173,18 +160,17 @@ function log_website(URL, site, rating, description) {
     return 0;
 }
 
+ /**
+ * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+ * 
+ * Param:
+ *      - site: the article being rated.
+ *      - rating: the user rating.
+ * Return:
+ *      - -1    if error occurred.
+ *      - 0     if successful.
+ */
 function log_user_entry(site, rating) {
-    /**
-     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
-     * 
-     * Param:
-     *      - site: the article being rated.
-     *      - rating: the user rating.
-     * Return:
-     *      - -1    if error occurred.
-     *      - 0     if successful.
-     */
-
     // Assume rating = 1 or -1
     if (rating != -1 && rating != 1) {
         return -1
@@ -223,17 +209,16 @@ function log_user_entry(site, rating) {
     return 0
 }
 
-
+ /**
+ * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+ * 
+ * Param:
+ *      - site: the article being rated.
+ * Return:
+ *      - a promise containing the result 
+ *             [thumb_up, thumb_down] or [-666, -666] if not exist   
+ */
 function get_site_user_rating(site){
-    /**
-     * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
-     * 
-     * Param:
-     *      - site: the article being rated.
-     * Return:
-     *      - a promise containing the result 
-     *             [thumb_up, thumb_down] or [-666, -666] if not exist   
-     */
     return new Promise(function (resolve) {
         var docRef = db.collection("UserRatings").doc(site)
         var rating = null
@@ -247,5 +232,6 @@ function get_site_user_rating(site){
                     resolve(rating) 
                 }
             }).catch(err => console.log('error', err));
-    })}
+    })
+}
     

@@ -6,7 +6,7 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
   })
 
 
-// TODO:  3. Display Other stuff. 4. make it look sexc. 5. Only one window can be open at a time?
+
 function display_window(evt) {
 
     function close_window(evt2) {
@@ -50,7 +50,7 @@ function display_window(evt) {
     console.log("clicked:" + String(clicked));
     site = String(evt.currentTarget.domain);
     console.log(site);
-    //check_website(String(domain)).then(rating => {
+
     check_website_gpt(site).then(summary => {
         if (!clicked) {
             other_popups = document.querySelectorAll('[class^="popup_acrevus"]')
@@ -155,19 +155,16 @@ function display_window(evt) {
     });
 }
 
-// duplicate code ftw
+/**
+ * Returns an array of all the domains in the HTML page the user is looking at.
+ * 
+ * Return:
+ *      Array containing all websites listed on a given google search.
+ */
 function get_domain_tags() {
-    
-    /**
-     * Returns an array of all the domains in the HTML page the user is looking at.
-     * 
-     * Return:
-     *      Array containing all websites listed on a given google search.
-     */
-     var tab_title = '';
-     var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
-     //var numberOfSites = 20; // TODO: FIX THIS SO THAT WE CAN RE-ALLOCATE IT.
-     var list_of_sites = [];
+    var tab_title = '';
+    var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
+    var list_of_sites = [];
 
     //Get the number of searches available.
     // Go through the page and get the cite tags from the google search.
@@ -258,10 +255,4 @@ function get_domain_tags() {
             });
         });    
     });
-
-
- 
-    
-   
-    
 }

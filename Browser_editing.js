@@ -5,7 +5,6 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('testButton').addEventListener('click', get_domain_tags);      
-    // dont try this at home kids -> chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
 });
 
 
@@ -25,7 +24,6 @@ function get_domain_tags() {
      */
      var tab_title = '';
      var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
-     //var numberOfSites = 20; // TODO: FIX THIS SO THAT WE CAN RE-ALLOCATE IT.
      var list_of_sites = [];
 
     //Get the number of searches available.

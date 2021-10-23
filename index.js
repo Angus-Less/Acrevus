@@ -1,4 +1,13 @@
+/**
+ * Icon displayed next to each domain on the page that when clicked will display
+ *  the modal window with domain specific information.
+ */
 document.getElementById("descButton").addEventListener("click", get_description);
+
+/**
+ * Function run when icon button instantiated above is clicked.
+ * 
+ */
 function get_description() {
     var ratingDict = {
         null : "unknown",
