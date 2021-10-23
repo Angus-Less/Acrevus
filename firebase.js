@@ -87,7 +87,6 @@ function check_website_gpt(site) {
                 console.log("Document data:", doc.data());
                 
                 data = doc.data();
-                //console.log(data.rating);
                 return data.desc;
             } else {
                 // doc.data() will be undefined in this case
@@ -117,7 +116,6 @@ function get_name(site) {
                 console.log("Document data:", doc.data());
                 
                 data = doc.data();
-                //console.log(data.rating);
                 return data.name;
             } else {
                 // doc.data() will be undefined in this case
@@ -197,7 +195,6 @@ function log_user_entry(site, rating) {
                         "thumbs_down": 0,
                     })
                 } else {
-                    console.log("NEW SITE THUMBS DOWN")
                     docRef.set({
                         "thumbs_up": 0,
                         "thumbs_down": 1,
@@ -210,7 +207,7 @@ function log_user_entry(site, rating) {
 }
 
  /**
- * Logs the user's rating (out of a CURRENTLY ARBITRARY NUMBER).
+ * Retrieves user ratings for a specific domain.
  * 
  * Param:
  *      - site: the article being rated.
