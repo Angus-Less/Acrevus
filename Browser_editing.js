@@ -3,28 +3,26 @@
  * 
  * The following are required because of Chrome's Content Security Policy banning all inline scripts and event-functions.
  */
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('testButton').addEventListener('click', get_domain_tags);      
-});
 
-
+/**
+ * System timeout for the page.
+ * 
+ * Return:
+ *      Promise giving a resolve of a timeour for the page.
+ */
 function sleep(ms) {
-    /**
-     * System timeout for the page.
-     */
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
 
+
+/**
+ * Returns an array of all the domains in the HTML page the user is looking at.
+ * 
+ * Return:
+ *      Array containing all websites listed on a given google search.
+ */
 function get_domain_tags() {
-    /**
-     * Returns an array of all the domains in the HTML page the user is looking at.
-     * 
-     * Return:
-     *      Array containing all websites listed on a given google search.
-     */
      var tab_title = '';
-     var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
-     var list_of_sites = [];
 
     //Get the number of searches available.
     // Go through the page and get the cite tags from the google search.
@@ -67,10 +65,4 @@ function get_domain_tags() {
             });
         });    
     });
-
-
- 
-    
-   
-    
 }
