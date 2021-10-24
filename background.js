@@ -1,57 +1,80 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' || changeInfo.url) {
-        get_domain_tags(); 
+        load_icons(); 
     }
   }
 )
 
-
+/**
+ * Handles window functionality (open window, close, send ratings etc.)
+ * 
+ * Param:
+ *      - evt: event listener when icon opened. 
+ */
 function display_window(evt) {
 
-    function close_window(evt2) {
-        idd = evt2.currentTarget.id;
-        domain = evt2.currentTarget.domain;
-        rating = evt2.currentTarget.rating;
-        console.log("IDDD:" + String(idd));
-        if (document.querySelectorAll('.popup_acrevus'+String(idd)).length > 0) {
-            document.querySelectorAll('.popup_acrevus'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.yes_btn'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.no_btn'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.star1'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.star2'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.star3'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.star4'+String(idd))[0].outerHTML = "";
-            document.querySelectorAll('.star5'+String(idd))[0].outerHTML = "";
-            const tmp1 = document.getElementsByClassName("icon_acrevus" + String(idd))[0];
-            tmp1.id = idd;
-            tmp1.domain = domain;
-            tmp1.rating = rating;
-            tmp1.addEventListener("click", display_window, false);
+    // <p> tag message when user sends a rating. 
+    rating_message = "<p style='z-index:9999;position:absolute;left:45px;top:390px;width:250px;color:white;font-size:15px;'> Thank you for your rating. </p>";
+
+    /**
+     * Closes window on click (or if automatically clicked).
+     * 
+     * Param:
+     *      - evt_close: event listener when window clicked to close. 
+     */
+    function close_window(evt_close) {
+        domain_id = evt_close.currentTarget.id;
+        domain = evt_close.currentTarget.domain;
+        rating = evt_close.currentTarget.rating;
+        // check if window exists
+        if (document.querySelectorAll('.popup_acrevus'+String(domain_id)).length > 0) {
+            // remove stars and popup
+            document.querySelectorAll('.popup_acrevus'+String(domain_id))[0].outerHTML = "";
+            try {
+                document.querySelectorAll('.yes_btn'+String(domain_id))[0].outerHTML = "";
+                document.querySelectorAll('.no_btn'+String(domain_id))[0].outerHTML = "";
+            } catch (err) {
+                // already deleted yes/no buttons (unclicked)
+            }
+            document.querySelectorAll('.star1'+String(domain_id))[0].outerHTML = "";
+            document.querySelectorAll('.star2'+String(domain_id))[0].outerHTML = "";
+            document.querySelectorAll('.star3'+String(domain_id))[0].outerHTML = "";
+            document.querySelectorAll('.star4'+String(domain_id))[0].outerHTML = "";
+            document.querySelectorAll('.star5'+String(domain_id))[0].outerHTML = "";
+
+            // add click event back to icon as it has been disabled
+            const open_window_evt = document.getElementsByClassName("icon_acrevus" + String(domain_id))[0];
+            open_window_evt.id = domain_id;
+            open_window_evt.domain = domain;
+            open_window_evt.rating = rating;
+            open_window_evt.addEventListener("click", display_window, false);
         }
     }
 
-    function send_yes(evt) {
+    /**
+     * Upvote or Downvote domain as being reliable to server, and remove buttons so users cant spam votes.
+     * 
+     * Param:
+     *      - evt: event listener when yes button clicked. 
+     *      - evt.rating: -1 if unreliable, 1 if reliable.
+     *      - evt.domain: website domain the window is associated to.
+     *      - evt.id: id of the window for this domain.
+     */
+    function send_rating(evt) {
         domain = String(evt.currentTarget.domain);
-        console.log(domain);
-        console.log("Sent yes.");
-        log_user_entry(domain, 1); 
-    }
-    
-    function send_no(evt) {
-        domain = String(evt.currentTarget.domain);
-        console.log(domain);
-        console.log("Sent no.");
-        log_user_entry(domain, -1); 
+        domain_id = evt.currentTarget.id;
+        score = evt.currentTarget.rating;
+        log_user_entry(domain, score); // 1 for reliable, -1 for unreliable
+        document.querySelectorAll('.yes_btn'+String(domain_id))[0].outerHTML = "";
+        document.querySelectorAll('.no_btn'+String(domain_id))[0].outerHTML = "";
+        document.querySelectorAll('.popup_acrevus'+String(domain_id))[0].innerHTML += rating_message;
     }
 
     var id = evt.currentTarget.id;
-    console.log(id);
     var rating = evt.currentTarget.rating;
     var clicked = document.getElementsByClassName("popup_acrevus"+String(id)).length != 0;
-    console.log("clicked:" + String(clicked));
     site = String(evt.currentTarget.domain);
-    console.log(site);
 
     check_website_gpt(site).then(summary => {
         if (!clicked) {
@@ -122,7 +145,7 @@ function display_window(evt) {
                         var summaryFormatted = summary.replace(new RegExp('{|}|[|]', 'g'), '');
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += "<div class='popup_acrevus"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); width:270px; \
                     height:446px; position:relative;left:600px;top:-30px;z-index:9999'> \
-                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:250px;width:90%;word-wrap:break-word;'>" + summaryFormatted + "</p>" + ". " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
+                    " + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:250px;width:90%;word-wrap:break-word;'>" + summaryFormatted + "</p>" + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
                     "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) + "</p></div>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:120px; \
                         height:28px; position:relative;left:610px;top:-260px;z-index:9999'></div></a>"
@@ -141,11 +164,15 @@ function display_window(evt) {
                     }
                     const tmp2 = document.getElementsByClassName("yes_btn" + String(id))[0];
                     tmp2.domain = String(site);
-                    tmp2.addEventListener("click", send_yes, false);
+                    tmp2.id = id;
+                    tmp2.rating = 1;
+                    tmp2.addEventListener("click", send_rating, false);
                     
                     const tmp3 = document.getElementsByClassName("no_btn" + String(id))[0];
                     tmp3.domain = String(site);
-                    tmp3.addEventListener("click", send_no, false);
+                    tmp3.id = id;
+                    tmp3.rating = -1;
+                    tmp3.addEventListener("click", send_rating, false);
                    
                     const tmp1 = document.getElementsByClassName("icon_acrevus" + String(id))[0];
                     tmp1.id = String(id);
@@ -164,7 +191,7 @@ function display_window(evt) {
  * Return:
  *      Array containing all websites listed on a given google search.
  */
-function get_domain_tags() {
+function load_icons() {
     var tab_title = '';
     var currentPage = 0; // This should be incremented in states of 2 [0, 2, 4, etc...]
     var list_of_sites = [];
