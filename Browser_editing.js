@@ -4,6 +4,10 @@
  * The following are required because of Chrome's Content Security Policy banning all inline scripts and event-functions.
  */
 
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('testButton').addEventListener('click', get_domain_tags);      
+});
+
 /**
  * System timeout for the page.
  * 
