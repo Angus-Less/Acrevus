@@ -159,7 +159,7 @@ function display_window(evt) {
                     // surround by <a> tag with blank javascript to override click event to go to the domain website
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: \
-                        url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:118px; \
+                        url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:117px; \
                         height:28px; position:relative;left:610px;top:-260px;z-index:9999;background-size: contain;'></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:100000' ><div class='no_btn"+String(id) + "'style='background-image: \
