@@ -12,7 +12,7 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
-var siteCollection = "GPT3-sites";
+var siteCollection = "GPT3-Sites";
 
 
  /**
