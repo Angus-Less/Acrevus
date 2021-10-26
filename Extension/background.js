@@ -1,10 +1,17 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' || changeInfo.url) {
-        load_icons(); 
+        chrome.tabs.executeScript(tabId, {
+            code: `String(document.URL)`
+            }, function(url) {
+                if (String(url).includes("google")) {
+                    load_icons(); 
+                } else {
+                    // twitter
+                }
+        });
     }
-  }
-)
+})
 
 /**
  * Handles window functionality (open window, close, send ratings etc.)
