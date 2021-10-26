@@ -79,7 +79,13 @@ function display_window(evt) {
     var clicked = document.getElementsByClassName("popup_acrevus"+String(id)).length != 0;
     // site domain for this window
     var site = String(evt.currentTarget.domain);
-
+    var site_name = site;
+    get_name(site).then(name => {
+        if (name != null) {
+            site_name = name;
+        }
+    });
+    
     // if window not open, open it
     if (!clicked) {
         // close other windows
@@ -143,7 +149,7 @@ function display_window(evt) {
                             "<p align=\"justify\" style='color:white;font-size:10px;position:absolute;left:13px;top:250px;\
                             width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) +"</p>"
+                            width:90%;word-wrap:break-word;'>" + String(site_name) + String(trustworthy_rating) +"</p>"
                     } else {
                         var summaryFormatted = summary.replace(new RegExp('{|}|[|]', 'g'), '');
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += popup_html + 
@@ -152,7 +158,7 @@ function display_window(evt) {
                             "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;\
                             width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;'>" + String(site) + String(trustworthy_rating) + "</p></div>";
+                            width:90%;word-wrap:break-word;'>" + String(site_name) + String(trustworthy_rating) + "</p></div>";
                     }
 
                     // add yes and no buttons and stars
@@ -240,7 +246,9 @@ function load_icons() {
                         for (i = 0; i < ${numberOfSites}; i++) {
                             domain = String(document.querySelectorAll("cite")[i].textContent).split(" ")[0]; 
                             // remove domain text after .com and before and including https://www. 
-                            domain = domain.split("com")[0] + "com";
+                            if (domain.includes("com")) {
+                                domain = domain.split("com")[0] + "com";
+                            }
                             domain = domain.split(".");
                             domain = domain.at(-2) + "." + domain.at(-1);
                             if (domain.includes("//")) {
