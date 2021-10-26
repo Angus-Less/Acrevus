@@ -12,6 +12,7 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
+var siteCollection = "GPT3-sites";
 
 
  /**
@@ -49,7 +50,7 @@ async function log_website(site) {
  *      - null  if website is unknown
  */
 function check_website(site) {
-    var docRef = db.collection("Sites").doc(site);
+    var docRef = db.collection(siteCollection).doc(site);
 
     return docRef.get().then(
         (doc) => {
@@ -78,7 +79,7 @@ function check_website(site) {
  *      GPT-3 Summary 
  */
 function check_website_gpt(site) {
-    var docRef = db.collection("Sites").doc(site);
+    var docRef = db.collection(siteCollection).doc(site);
 
     return docRef.get().then(
         (doc) => {
@@ -107,7 +108,7 @@ function check_website_gpt(site) {
 *      - string: name of site
 */
 function get_name(site) {
-     var docRef = db.collection("Sites").doc(site);
+     var docRef = db.collection(siteCollection).doc(site);
 
     return docRef.get().then(
         (doc) => {
@@ -141,7 +142,7 @@ function get_name(site) {
  */
 function log_website(URL, site, rating, description) {
     // Add a new document in collection "cities"
-    db.collection("Sites").doc(URL).set({
+    db.collection(siteCollection).doc(URL).set({
         name: site,
         rating: rating,
         desc: description
