@@ -1,8 +1,7 @@
 // on tab load
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-    console.log(changeInfo.status);
-    console.log(changeInfo.url);
     if (changeInfo.status == 'complete' || changeInfo.url) {
+        console.log("HEELLO");
         load_icons(); 
     }
   }
