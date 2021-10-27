@@ -186,31 +186,31 @@ function display_window(evt) {
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='yes_btn"+String(id) + "'style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:117px; \
-                        height:28px; position:relative;left:" + ((twitter) ? 0 : 610) + "px;top:"+((twitter) ? 0 : -260)+"px;z-index:9999;background-size: contain;'></div></a>";
+                        height:28px; position:relative;left:" + ((twitter) ? 130 : 610) + "px;top:"+((twitter) ? -230 : -260)+"px;z-index:9999;background-size: contain;'></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:9999' ><div class='no_btn"+String(id) + "'style='background-image: \
+                        style='z-index:100000' ><div class='no_btn"+String(id) + "'style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
-                        height:28px; position:relative;left:"+ ((twitter) ? 0 : 740) + " px;top:"+((twitter) ? 0 : -232)+"px;z-index:9999;background-size: contain;'></div></a>";
+                        height:28px; position:relative;left:" + ((twitter) ? 260 : 740) + "px;top:" + ((twitter) ? -202 : -232) + "px;z-index:9999;background-size: contain;'></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='star1"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[0]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:635px;top:-438px;z-index:9999;background-size: 35px;' ></div></a>";
+                        height:32px; position:relative;left:" + ((twitter) ? 155 : 635) + "px;top:"+((twitter) ? -410 : -438)+"px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='star2"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[1]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:675px;top:-406px;z-index:9999;background-size: 35px;' ></div></a>";
+                        height:32px; position:relative;left:" + ((twitter) ? 195 : 675) + "px;top:"+((twitter) ? -378 : -406)+"px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='star3"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[2]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:715px;top:-374px;z-index:9999;background-size: 35px;' ></div></a>";
+                        height:32px; position:relative;left:" + ((twitter) ? 235 : 715) + "px;top:"+((twitter) ? -346 : -374)+"px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='star4"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[3]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:755px;top:-342px;z-index:9999;background-size: 35px;' ></div></a>";
+                        height:32px; position:relative;left:" + ((twitter) ? 275 : 755) + "px;top:"+((twitter) ? -314 : -342)+"px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
                         style='z-index:9999' ><div class='star5"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[4]) + ".png\"); width:35px; \
-                        height:32px; position:relative;left:795px;top:-310px;z-index:9999;background-size: 35px;'></div></a>";
+                        height:32px; position:relative;left:" + ((twitter) ? 315 : 795) + "px;top:"+((twitter) ? -282 : -310)+"px;z-index:9999;background-size: 35px;'></div></a>";
 
                     // add click events to yes and no buttons
                     const yes_btn_evt = document.getElementsByClassName("yes_btn" + String(id))[0];
