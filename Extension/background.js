@@ -165,20 +165,20 @@ function display_window(evt) {
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += popup_html + 
                             "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>" + ratingDescription + "</p>" + 
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>" + ratingDescription + "</p>" + 
                             "<p align=\"justify\" style='color:white;font-size:10px;position:absolute;left:13px;top:250px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>(Summary Unavailable)</p>" 
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>(Summary Unavailable)</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>" + String(site_name) + String(trustworthy_rating) +"</p>"
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>" + String(site_name) + String(trustworthy_rating) +"</p>"
                     } else {
                         var summaryFormatted = summary.replace(new RegExp('{|}|[|]', 'g'), '');
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += popup_html + 
                             "<p align=\"justify\" style='color:white;font-size:10px;position:absolute;left:13px;top:250px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>" + summaryFormatted + "</p>" + 
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>" + summaryFormatted + "</p>" + 
                             "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>" + ratingDescription + "</p>" 
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>" + ratingDescription + "</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;z-index:9999;'>" + String(site_name) + String(trustworthy_rating) + "</p></div>";
+                            width:90%;word-wrap:break-word;" + (twitter ? "white-space: normal" : "") + ";z-index:9999;'>" + String(site_name) + String(trustworthy_rating) + "</p></div>";
                     }
 
                     // add yes and no buttons and stars
