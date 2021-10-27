@@ -4,10 +4,14 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
         chrome.tabs.executeScript(tabId, {
             code: `String(document.URL)`
             }, function(url) {
-                if (String(url).includes("google")) {
-                    load_icons(); 
-                } else {
-                    // twitter
+                if (String(url).includes("google.com")) {
+                    load_icons(false); 
+                } else if (String(url).includes("twitter")) {
+                    setTimeout(function() {
+                        setInterval(function() {
+                            load_icons(true); // twitter
+                        }, 5000);
+                      }, 1000);
                 }
         });
     }
@@ -34,6 +38,7 @@ function display_window(evt) {
         domain_id = evt_close.currentTarget.id;
         domain = evt_close.currentTarget.domain;
         rating = evt_close.currentTarget.rating;
+        twitter = evt_close.currentTarget.twitter;
         // check if window exists
         if (document.querySelectorAll('.popup_acrevus'+String(domain_id)).length > 0) {
             // remove stars and popup
@@ -55,6 +60,7 @@ function display_window(evt) {
             open_window_evt.id = domain_id;
             open_window_evt.domain = domain;
             open_window_evt.rating = rating;
+            open_window_evt.twitter = twitter;
             open_window_evt.addEventListener("click", display_window, false);
         }
     }
@@ -87,6 +93,8 @@ function display_window(evt) {
     // site domain for this window
     var site = String(evt.currentTarget.domain);
     var site_name = site;
+    var twitter = evt.currentTarget.twitter;
+
     get_name(site).then(name => {
         if (name != null) {
             site_name = name;
@@ -145,57 +153,62 @@ function display_window(evt) {
                     var trustworthy_rating = ratingDict[rating];
                     
                     // html for window popup template
-                    popup_html = "<div class='popup_acrevus" + String(id) + "'style='background-image: \
-                        url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/window.png\"); \
-                        width:270px; height:446px; position:relative;left:600px;top:-30px;z-index:9999;background-size: contain;'>";
+                    tmp = [600, -30]
+                    if (twitter) {
+                        tmp = [120, 0]
+                    }
+                    popup_html = "<div class='popup_acrevus" + String(id) + "' style=\"background-image: \
+                        url('chrome-extension:" + String(chrome.runtime.id) + "/img/window.png'); \
+                        width:270px; height:446px; position:relative;left:" + tmp[0] + "px;top:"+tmp[1]+"px;z-index:9998;background-size: contain;\">";
+
                     // add credibility summary to window
                     if (summary == null) {
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += popup_html + 
                             "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;\
-                            width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" + 
+                            width:90%;word-wrap:break-word;z-index:9999;'>" + ratingDescription + "</p>" + 
                             "<p align=\"justify\" style='color:white;font-size:10px;position:absolute;left:13px;top:250px;\
-                            width:90%;word-wrap:break-word;'>(Summary Unavailable)</p>" 
+                            width:90%;word-wrap:break-word;z-index:9999;'>(Summary Unavailable)</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;'>" + String(site_name) + String(trustworthy_rating) +"</p>"
+                            width:90%;word-wrap:break-word;z-index:9999;'>" + String(site_name) + String(trustworthy_rating) +"</p>"
                     } else {
                         var summaryFormatted = summary.replace(new RegExp('{|}|[|]', 'g'), '');
                         document.querySelectorAll('.icon_acrevus'+String(id))[0].innerHTML += popup_html + 
                             "<p align=\"justify\" style='color:white;font-size:10px;position:absolute;left:13px;top:250px;\
-                            width:90%;word-wrap:break-word;'>" + summaryFormatted + "</p>" + 
+                            width:90%;word-wrap:break-word;z-index:9999;'>" + summaryFormatted + "</p>" + 
                             "<p style='color:white;font-size:10px;position:absolute;left:13px;top:196px;\
-                            width:90%;word-wrap:break-word;'>" + ratingDescription + "</p>" 
+                            width:90%;word-wrap:break-word;z-index:9999;'>" + ratingDescription + "</p>" 
                             + "<p style='color:white;font-size:10px;position:absolute;left:13px;top:90px;\
-                            width:90%;word-wrap:break-word;'>" + String(site_name) + String(trustworthy_rating) + "</p></div>";
+                            width:90%;word-wrap:break-word;z-index:9999;'>" + String(site_name) + String(trustworthy_rating) + "</p></div>";
                     }
 
                     // add yes and no buttons and stars
                     // surround by <a> tag with blank javascript to override click event to go to the domain website
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='yes_btn"+String(id) + "'style='background-image: \
+                        style='z-index:9999' ><div class='yes_btn"+String(id) + "'style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/yes_button.png\"); width:117px; \
-                        height:28px; position:relative;left:610px;top:-260px;z-index:9999;background-size: contain;'></div></a>";
+                        height:28px; position:relative;left:" + ((twitter) ? 0 : 610) + "px;top:"+((twitter) ? 0 : -260)+"px;z-index:9999;background-size: contain;'></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='no_btn"+String(id) + "'style='background-image: \
+                        style='z-index:9999' ><div class='no_btn"+String(id) + "'style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/no_button.png\"); width:120px; \
-                        height:28px; position:relative;left:740px;top:-232px;z-index:9999;background-size: contain;'></div></a>";
+                        height:28px; position:relative;left:"+ ((twitter) ? 0 : 740) + " px;top:"+((twitter) ? 0 : -232)+"px;z-index:9999;background-size: contain;'></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='star1"+String(id) + "' style='background-image: \
+                        style='z-index:9999' ><div class='star1"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[0]) + ".png\"); width:35px; \
                         height:32px; position:relative;left:635px;top:-438px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='star2"+String(id) + "' style='background-image: \
+                        style='z-index:9999' ><div class='star2"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[1]) + ".png\"); width:35px; \
                         height:32px; position:relative;left:675px;top:-406px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='star3"+String(id) + "' style='background-image: \
+                        style='z-index:9999' ><div class='star3"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[2]) + ".png\"); width:35px; \
                         height:32px; position:relative;left:715px;top:-374px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='star4"+String(id) + "' style='background-image: \
+                        style='z-index:9999' ><div class='star4"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[3]) + ".png\"); width:35px; \
                         height:32px; position:relative;left:755px;top:-342px;z-index:9999;background-size: 35px;' ></div></a>";
                     document.querySelectorAll('.icon_acrevus'+String(id))[0].outerHTML += "<a href='javascript:;' \
-                        style='z-index:100000' ><div class='star5"+String(id) + "' style='background-image: \
+                        style='z-index:9999' ><div class='star5"+String(id) + "' style='background-image: \
                         url(\"chrome-extension:" + String(chrome.runtime.id) + "/img/" + String(star_amounts[4]) + ".png\"); width:35px; \
                         height:32px; position:relative;left:795px;top:-310px;z-index:9999;background-size: 35px;'></div></a>";
 
@@ -217,6 +230,7 @@ function display_window(evt) {
                     open_window_evt.id = String(id);
                     open_window_evt.rating = rating;
                     open_window_evt.domain = String(site);
+                    open_window_evt.twitter = twitter;
                     open_window_evt.addEventListener("click", close_window, false);
                 }
             )   
@@ -227,7 +241,7 @@ function display_window(evt) {
 /**
  * Creates icons next to cite tags on google (domains) on page load.
  */
-function load_icons() {
+function load_icons(twitter) {
     chrome.tabs.query({active: true}, function(tabs) {
         var tab = tabs[0];
         // execute firebase scripts so firebase can be queried
@@ -242,7 +256,11 @@ function load_icons() {
         });
         // get number of google cite tags
         chrome.tabs.executeScript(tab.id, {
-        code: `document.querySelectorAll("cite").length`
+        code: `if (!${twitter}) {
+                document.querySelectorAll("cite").length;
+                } else {
+                    ~~(document.querySelectorAll(".css-901oao.css-bfa6kz.r-14j79pv.r-37j5jr.r-a023e6.r-16dba41.r-rjixqe.r-bcqeeo.r-qvutc0:not(.r-18u37iz)").length);
+                }`
         }, function(numberOfSites) {
             var domains = [];
             var id = chrome.runtime.id;
@@ -250,8 +268,15 @@ function load_icons() {
             chrome.tabs.executeScript(tab.id, {
                 code: ` 
                         var page_domains = [];
+                        console.log("${numberOfSites}");
                         for (i = 0; i < ${numberOfSites}; i++) {
-                            domain = String(document.querySelectorAll("cite")[i].textContent).split(" ")[0]; 
+                            if (!${twitter}) {
+                                domain = String(document.querySelectorAll("cite")[i].textContent).split(" ")[0];
+                            } else {
+                                tmp = document.querySelectorAll(".css-901oao.css-bfa6kz.r-14j79pv.r-37j5jr.r-a023e6.r-16dba41.r-rjixqe.r-bcqeeo.r-qvutc0:not(.r-18u37iz)")[i];
+                                domain = String(tmp.textContent).split(" ")[0];
+                            }
+                            console.log(domain);
                             // remove domain text after .com and before and including https://www. 
                             if (domain.includes("com")) {
                                 domain = domain.split("com")[0] + "com";
@@ -301,16 +326,24 @@ function load_icons() {
                                     loaded = document.querySelectorAll(".icon_acrevus${i}").length != 0; 
                                     if (!loaded) { 
                                         // add icon
-                                        document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' \
+                                        if (!${twitter}) {
+                                            document.querySelectorAll("cite")[${i}].innerHTML += "<a href='javascript:;' \
                                             class='icon_acrevus"+String(${i})+"' style='z-index:100000'><img src = \
                                             chrome-extension:/${id}/img/" + String(icon_path) + " \
                                             style='width:20px;height:20px;vertical-align: middle;margin-left:8px;'></button>";
+                                        } else {
+                                            document.querySelectorAll(".css-901oao.css-bfa6kz.r-14j79pv.r-37j5jr.r-a023e6.r-16dba41.r-rjixqe.r-bcqeeo.r-qvutc0:not(.r-18u37iz)")[${i}].innerHTML += "<a href='javascript:;' \
+                                            class='icon_acrevus"+String(${i})+"' style='z-index:100000'><img src = \
+                                            chrome-extension:/${id}/img/" + String(icon_path) + " \
+                                            style='width:20px;height:20px;vertical-align: middle;margin-left:8px;'></button>";
+                                        }
 
                                         // add click event listener to open window on icon click
                                         const open_window_evt = document.getElementsByClassName("icon_acrevus" + String(${i}))[0];
                                         open_window_evt.id = ${i};
                                         open_window_evt.domain = [${domains}][${i}];
                                         open_window_evt.rating = rating;
+                                        open_window_evt.twitter = ${twitter};
                                         open_window_evt.addEventListener("click", ${display_window}, false);
                                     } 
                                 });
