@@ -12,3 +12,5 @@ Current platforms that work:
 - Twitter (embedded links from posts)
 
 If you click on one of the icons, it will open up the modal window, allowing you to rate the page (which will affect how the user ranking works).
+
+![](./screenshot_acrevus.png) 
